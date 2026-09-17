@@ -31,3 +31,137 @@
 .app-breadcrumb{display:flex;gap:12px;padding-block:28px;font-size:.8rem;color:var(--muted)}.app-breadcrumb a:hover{text-decoration:underline}.app-page .app-feature{margin-bottom:0}.app-page .feature-copy h1{font-size:clamp(3rem,4.6vw,4.4rem);font-weight:600;letter-spacing:-.05em;margin-block:18px 25px;line-height:1.05}.app-page .feature-copy .button{font-size:.85rem;gap:12px}.app-page .app-feature.macrova .feature-copy{order:0}.app-page .app-feature.macrova .feature-visual{order:0}.app-story{padding-block:70px}.app-story h2{font-size:clamp(2.4rem,4vw,3.7rem);font-weight:600;letter-spacing:-.05em;max-width:850px;margin-top:20px}.app-story-intro{max-width:760px;color:var(--muted);margin-top:22px;font-size:1.1rem}.app-capabilities{display:grid;grid-template-columns:repeat(3,1fr);gap:35px;margin-top:42px}.app-capabilities article{border-top:1px solid var(--border);padding-top:20px}.app-capabilities h3{font-size:1.3rem;letter-spacing:-.04em;margin-block:20px 15px}.app-capabilities p{font-size:.95rem;color:var(--muted)}.app-test-build{display:grid;grid-template-columns:1fr 1fr;gap:65px;padding-block:60px;border-top:1px solid var(--border);align-items:start}.app-test-build h2{font-size:clamp(2.8rem,4vw,4rem);font-weight:600;letter-spacing:-.045em;margin-block:20px 30px}.app-test-build h3{font-size:1.35rem;letter-spacing:-.04em;margin-bottom:15px}.app-test-build p{color:var(--muted);font-size:.95rem;margin-block:12px}.app-test-build .app-caveat{font-size:.87rem;margin-top:20px}.app-download-panel{padding:32px;border:1px solid var(--border);border-radius:12px;background:#eef0e6}.app-download-panel h3{margin-top:22px;font-size:1.6rem}.app-download-panel .download-note{font-size:.86rem;margin-block:22px}.app-download-panel .button{width:100%;margin-bottom:12px}.app-download-panel .release-detail-link{display:block;font-size:.83rem;padding-block:5px}.app-download-panel .platform-note{font-size:.75rem;margin-top:18px}.more-apps{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px;padding-block:20px 65px;font-size:.93rem}.more-apps>span{font-family:Georgia,serif;font-style:italic;font-size:1.4rem}.more-apps>a{text-decoration:underline;text-underline-offset:5px}.more-apps>a span{margin-left:20px}@media(max-width:759px){.app-page .feature-copy h1{font-size:3rem}.app-breadcrumb{padding-block:20px}.app-story{padding-block:45px}.app-story-intro{font-size:1rem}.app-capabilities{grid-template-columns:1fr;gap:28px;margin-top:28px}.app-capabilities h3{margin-top:12px}.app-test-build{grid-template-columns:1fr;gap:28px;padding-block:40px}.app-download-panel{padding:25px}.more-apps{display:grid;gap:17px;padding-bottom:40px}.app-page .feature-visual{min-height:570px}}
 
 .site-header nav>a{white-space:nowrap}@media(max-width:759px){.site-header{gap:12px}.site-header nav{gap:12px}.app-page-sidequest .feature-copy h1,.sidequest .feature-copy h3{font-size:clamp(2.1rem,10vw,3rem)}}
+
+/* A quieter page, with distinct chapters and app artwork from the native projects. */
+.wordmark { letter-spacing: -1.5px; }
+.wordmark-dot { font-size: inherit; margin-left: -7px; align-self: auto; }
+.official-icon { object-fit: contain; background: transparent; border: 1px solid #18251e12; }
+.hero { padding-block: 58px 64px; }
+.hero-description { max-width: 390px; }
+.hero-visual { background-color: #eeeee2; border-radius: 24px; }
+.hero-visual::after { content: ''; position: absolute; width: 390px; height: 390px; border: 1px solid #b9c1a4; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.floating-card { border-color: #18251e35; box-shadow: 5px 7px 0 #18251e0a; }
+.studio-stamp { right: 4px; border: 1px solid var(--ink); box-shadow: 3px 4px 0 #18251e18; }
+.ticker { border-block: 1px solid var(--ink); }
+.ticker > div { animation: none; font-size: 1rem; padding: 23px 0; gap: 40px; }
+.collection-note { color: var(--muted); font-size: .66rem; letter-spacing: 1.3px; white-space: nowrap; }
+.section-heading { border-top: 1px solid var(--ink); padding-top: 22px; margin-bottom: 32px; }
+.section-heading h2 { margin-top: 14px; }
+.apps-section { padding-block: 68px 80px; }
+.app-feature { border: 1px solid #18251e40; border-radius: 20px; margin-bottom: 48px; }
+.sidequest { background: #fbefe8; }
+.macrova { background: #edf2df; }
+.revisen { background: #efedf8; }
+.feature-copy { display: flex; flex-direction: column; justify-content: center; padding: 32px; }
+.app-kicker { font-size: 1.4rem; }
+.app-kicker .app-symbol { width: 44px; height: 44px; border-radius: 12px; }
+.category { margin-top: 35px; letter-spacing: 1.8px; }
+.feature-copy h3, .app-page .feature-copy h1 { font-size: clamp(2.7rem,4.6vw,4.4rem); margin-block: 14px 22px; line-height: 1.06; }
+.feature-copy > p:not(.category) { font-size: 1rem; line-height: 1.6; max-width: 350px; }
+.feature-copy .text-link { align-self: flex-start; margin-top: 23px; gap: 35px; }
+.feature-copy .button { align-self: flex-start; margin-top: 25px; }
+.feature-visual, .app-page .feature-visual { height: 510px; min-height: 0; isolation: isolate; }
+.quest-visual { background: var(--pink); }
+.nutrition-visual { background: var(--green); }
+.study-visual { background-color: var(--purple); background-size: 40px 40px; }
+.quest-visual .preview-label { color: #584438; text-shadow: none; }
+.visual-orbit { position: absolute; width: 390px; height: 390px; border: 1px dashed #18251e44; border-radius: 50%; transform: rotate(-25deg) scaleY(.72); z-index: -1; }
+.visual-orbit::after { content: ''; position: absolute; inset: 48px -32px; border: 1px solid #18251e22; border-radius: 50%; transform: rotate(60deg); }
+.visual-index { position: absolute; right: 15px; top: -35px; font: 700 11rem/1.2 var(--display); letter-spacing: -.09em; color: transparent; -webkit-text-stroke: 1px #18251e2e; z-index: -1; }
+.phone { width: 272px; min-height: 490px; box-shadow: 12px 16px 0 #18251e14; }
+.quest-phone { margin: 0; transform: rotate(6deg) scale(.84); }
+.nutrition-phone { margin: 0; transform: rotate(-6deg) scale(.84); }
+.study-phone { margin: 0; transform: rotate(6deg) scale(.84); }
+.floating-label { font-size: .72rem; padding: 8px 13px; box-shadow: 3px 4px 0 #18251e15; }
+.quest-label { top: 36px; left: 22px; transform: rotate(-7deg); background: #fff8ef; border-color: #a88672; }
+.nutrition-label { top: 33px; left: 22px; }
+.nutrition-label-bottom { right: 18px; bottom: 42px; }
+.study-equation { left: 20px; top: 25px; font-size: 2.5rem; }
+.study-scribble { bottom: 43px; right: 16px; font-size: 1.5rem; }
+.about-section { padding-block: 66px; border-block: 1px solid var(--ink); overflow: hidden; }
+.about-layout { gap: 32px; }
+.about-copy { max-width: 390px; }
+.about-copy p { margin-bottom: 14px; font-size: 1.1rem; color: #d4dbce; }
+.about-coconut { width: 68px; height: 68px; margin-bottom: 20px; transform: rotate(-15deg); }
+.downloads-section { padding-block: 72px; }
+.device-notice { background: none; border: 0; padding: 0; margin-bottom: 24px; max-width: 650px; }
+.download-card { border-color: #18251e40; border-radius: 16px; padding: 25px; background: #fffef9; }
+.download-card .app-symbol { width: 52px; height: 52px; border-radius: 14px; }
+.download-card h3 { margin-top: 18px; }
+.download-card > p:not(.download-note):not(.download-meta) { display: none; }
+.download-card .build-badge { margin-top: 19px; }
+.download-card .download-note { line-height: 1.5; }
+.download-card .download-meta { line-height: 1.8; }
+.install-section { border-top: 1px solid var(--ink); padding-block: 54px 70px; }
+.install-intro { text-align: center; margin-inline: auto; }
+.install-intro > p:last-child { font-size: .9rem; }
+.install-steps { margin-block: 36px 70px; }
+.install-steps h3 { margin-top: 14px; }
+.install-help { width: min(100%,800px); margin-inline: auto; }
+.install-help > h3 { text-align: center; font-size: 2.2rem; letter-spacing: -.05em; font-weight: 600; margin-bottom: 27px; }
+.site-footer { border-top: 1px solid var(--ink); }
+.footer-wordmark { font-size: clamp(4rem,17vw,16rem); letter-spacing: -.085em; }
+.app-story { padding-block: 56px; }
+.app-story-intro { margin-top: 16px; }
+.app-capabilities { margin-top: 28px; gap: 24px; }
+.app-capabilities article { border-top-color: #18251e55; }
+.app-test-build { border-top-color: var(--ink); }
+.app-download-panel { border-color: #18251e40; background: #edf0e3; }
+.app-download-panel > .button { margin-top: 20px; }
+@media(min-width:760px) {
+  .feature-copy { padding: 36px; }
+  .feature-visual { border-left: 1px solid #18251e30; }
+  .macrova .feature-visual { border-left: 0; border-right: 1px solid #18251e30; }
+  .app-page .macrova .feature-visual { border-left: 1px solid #18251e30; border-right: 0; }
+  .about-layout { grid-template-columns: 1.2fr 1fr; }
+  .install-steps { gap: 40px; }
+}
+@media(min-width:1100px) {
+  .hero { gap: 55px; }
+  .feature-copy { padding: 42px 50px; }
+  .feature-visual, .app-page .feature-visual { height: 550px; }
+  .phone { width: 284px; }
+  .quest-phone { transform: rotate(6deg) scale(.94); }
+  .nutrition-phone { transform: rotate(-6deg) scale(.94); }
+  .study-phone { transform: rotate(6deg) scale(.94); }
+}
+@media(max-width:759px) {
+  .hero { padding-block: 34px 36px; gap: 32px; }
+  .hero-visual { height: 400px; border-radius: 18px; }
+  .float-sidequest { top: 55px; }
+  .float-macrova { top: 154px; }
+  .float-revisen { top: 255px; }
+  .studio-stamp { top: 115px; }
+  .collection-note { display: block; margin-top: 20px; white-space: normal; }
+  .apps-section { padding-block: 45px; }
+  .app-feature { margin-bottom: 30px; border-radius: 17px; }
+  .feature-copy { padding: 28px; }
+  .category { margin-top: 24px; }
+  .feature-copy h3, .sidequest .feature-copy h3, .app-page .feature-copy h1 { font-size: clamp(2.35rem,9.8vw,3.6rem); margin-block: 13px 18px; }
+  .feature-copy > p:not(.category) { font-size: .95rem; }
+  .feature-copy .text-link { margin-top: 17px; }
+  .feature-visual, .app-page .feature-visual { height: 440px; border-top: 1px solid #18251e30; }
+  .visual-index { font-size: 9rem; top: -28px; }
+  .phone { width: 272px; }
+  .quest-phone { transform: rotate(6deg) scale(.76); }
+  .nutrition-phone { transform: rotate(-6deg) scale(.76); }
+  .study-phone { transform: rotate(6deg) scale(.76); }
+  .quest-label, .nutrition-label { top: 23px; left: 16px; }
+  .about-section { padding-block: 46px; }
+  .about-layout { gap: 30px; }
+  .about-coconut { width: 54px; height: 54px; }
+  .about-copy p { font-size: 1rem; }
+  .downloads-section { padding-block: 46px; }
+  .download-grid { gap: 15px; }
+  .download-card { display: grid; grid-template-columns: 52px 1fr; gap: 0 15px; }
+  .download-card h3 { margin: 0; align-self: center; }
+  .download-card > :not(.app-symbol):not(h3) { grid-column: 1 / -1; }
+  .download-card .build-badge { justify-self: start; margin-top: 16px; }
+  .download-card .download-note { margin-block: 12px 18px; }
+  .install-section { padding-block: 40px 50px; }
+  .install-steps { margin-bottom: 50px; }
+  .install-steps h3 { margin-top: 5px; }
+  .install-help > h3 { font-size: 2rem; margin-bottom: 20px; }
+  .footer-wordmark { font-size: 17vw; }
+  .app-test-build { padding-block: 40px; }
+}
