@@ -1,0 +1,71 @@
+{
+  "date": "2026-09-17",
+  "tag": "android-test-2026-09-17",
+  "repository": "Tydooloo/kokonut",
+  "releaseUrl": "https://github.com/Tydooloo/kokonut/releases/tag/android-test-2026-09-17",
+  "releases": [
+    {
+      "id": "sidequest",
+      "name": "SideQuest",
+      "version": "1.0.0",
+      "packageName": "app.sidequest.sidequest",
+      "notes": "Connect to the internet and sign in to use groups, activities, plans and shared memories. This build is configured for hosted Firebase and Supabase services. Service availability and account flows have not been retested as part of this website release.",
+      "file": "sidequest-1.0.0-test.apk",
+      "bytes": 214347471,
+      "sha256": "a3ffde378b9983a8b7e340988450e4dcc0986289e05eb45c5a73ad58058967f5",
+      "certificateSha256": "cd1271bd466652a7754b04b8cec6e5f4129f22a25a0d39e8e4f7e76e90538bdd",
+      "versionCode": 1,
+      "minSdk": 24,
+      "minAndroid": "7.0",
+      "architectures": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ],
+      "buildType": "debug",
+      "url": "https://github.com/Tydooloo/kokonut/releases/download/android-test-2026-09-17/sidequest-1.0.0-test.apk"
+    },
+    {
+      "id": "macrova",
+      "name": "Macrova",
+      "version": "0.1.0",
+      "packageName": "com.example.macrova",
+      "notes": "Manual food logging works on-device. AI estimation and USDA lookup need a configured, reachable Macrova backend; no public backend is supplied by this download. Account features require Firebase setup. Food logs stay on this device. This development build is intended for local feature testing.",
+      "file": "macrova-0.1.0-test.apk",
+      "bytes": 127614716,
+      "sha256": "76c7c0e2639a65ae57babaea3daa7028f34bb3f46f1515847febc5457d684b02",
+      "certificateSha256": "cd1271bd466652a7754b04b8cec6e5f4129f22a25a0d39e8e4f7e76e90538bdd",
+      "versionCode": 1,
+      "minSdk": 24,
+      "minAndroid": "7.0",
+      "architectures": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ],
+      "buildType": "debug",
+      "url": "https://github.com/Tydooloo/kokonut/releases/download/android-test-2026-09-17/macrova-0.1.0-test.apk"
+    },
+    {
+      "id": "revisen",
+      "name": "Revisen",
+      "version": "0.1.0",
+      "packageName": "app.revisen.revisen",
+      "notes": "A reachable Revisen backend is required for accounts, course materials and practice. No public backend is supplied by this download. Ask the person running your test for their server URL and enter it in the app’s Connection settings. Installing the APK alone is not enough to use the learning workspace.",
+      "file": "revisen-0.1.0-test.apk",
+      "bytes": 163777543,
+      "sha256": "d984040717c0344a1cafdb9af740c42a2765d0dce9ca64e0f01d3e31fd6c016d",
+      "certificateSha256": "cd1271bd466652a7754b04b8cec6e5f4129f22a25a0d39e8e4f7e76e90538bdd",
+      "versionCode": 1,
+      "minSdk": 24,
+      "minAndroid": "7.0",
+      "architectures": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ],
+      "buildType": "debug",
+      "url": "https://github.com/Tydooloo/kokonut/releases/download/android-test-2026-09-17/revisen-0.1.0-test.apk"
+    }
+  ]
+}
