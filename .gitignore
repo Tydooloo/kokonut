@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.sites-runtime/
+node_modules/
+artifacts/
+test-results/
+playwright-report/
+*.apk
+*.zip
+*.tar.gz
+*.log
+
