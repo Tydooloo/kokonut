@@ -7,8 +7,10 @@ Deployed and verified on 17 September 2026.
 - Hosting address: https://kokonut.aaronko1005.chatgpt.site
 - Website source: https://github.com/Tydooloo/kokonut
 - APK release: https://github.com/Tydooloo/kokonut/releases/tag/android-test-2026-09-17
-- Live website source revision: `7a6f9be640f6548f4c7113513ce630a4d7e13e30`
-- Passing CI for that revision: https://github.com/Tydooloo/kokonut/actions/runs/35182478784
+- Live website source revision: `992849e15a89d8cad21a6521f3eb2bbd7621304f`
+- Passing CI for that revision: https://github.com/Tydooloo/kokonut/actions/runs/35203075033
+- Published design version: 2
+- Successful deployment: `appgdep_6aabad9fbb648191b83c293cb640be1c`
 
 ## Domain
 
@@ -30,6 +32,8 @@ All three public GitHub APK URLs responded without authentication, with an attac
 
 The optional `_headers` file is included for compatible static hosts. This Sites deployment did not return its custom CSP or nosniff headers in the checked CSS response; do not claim those headers are active here.
 
+The version 2 design was checked on both kokonut.cc and www.kokonut.cc. Homepage and all three app-page HTML match the tested source after excluding Cloudflare's observed per-request browser-check script. CSS, application JavaScript, the motion module, original coconut SVG and all three official app icon assets match byte-for-byte. The motion module is served as JavaScript. The public homepage initialized the motion controls correctly, displayed Kokonut with a capital K and the original coconut, and had no horizontal overflow. All three public APK response checks passed again.
+
 ## Future publication
 
 GitHub holds the independent website history and public APK release assets. A GitHub push alone does not redeploy Sites. Keep app implementation and runtime data in their separate repositories.
@@ -37,3 +41,5 @@ GitHub holds the independent website history and public APK release assets. A Gi
 Regenerate changed app/release pages, run `node scripts/check.mjs`, review the changes, commit and push to GitHub. Reuse the existing Site ID. Obtain a short-lived source write credential through Sites, push the same commit to its source repository using a per-command HTTP authorization header, and never persist that credential in files or remotes. Package `.openai/hosting.json` and the public `dist/` directory, save that exact pushed version, deploy it publicly, and confirm terminal success before checking the domain.
 
 Only website assets belong in the deployment archive. APK binaries are GitHub Release assets, and credentials or app runtime data must not enter the website repository or archive.
+
+On this Windows machine, Git Bash is installed at `C:/Program Files/Git/bin/bash.exe` but is not on the default PATH. Invoke the Sites `skills/sites-hosting/scripts/package-site.sh` helper with that executable and `/c/Users/...` paths for its arguments; GNU tar interprets a `C:` archive path as a remote host. The helper-built version 2 archive was validated before saving.
