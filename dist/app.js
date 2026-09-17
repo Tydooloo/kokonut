@@ -2,6 +2,7 @@ document.querySelectorAll('[data-year]').forEach(element => { element.textConten
 
 // Keep downloads, navigation and clipboard controls independent of animation.
 import('./motion.mjs').then(({setupMotion}) => setupMotion()).catch(() => {});
+import('./accordion.mjs').then(({setupAccordions}) => setupAccordions()).catch(() => {});
 
 const notice = document.querySelector('[data-device-notice]');
 const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);

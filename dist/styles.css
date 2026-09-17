@@ -211,6 +211,7 @@
 
 .faq-answer > p { font-size: .94rem; color: var(--muted); padding: 0 35px 24px 0; }
 .install-help details { overflow-anchor: none; }
+.install-help summary:focus-visible { outline-offset: -3px; }
 .install-help details[data-expanded="true"] summary > span { transform: rotate(45deg); }
 .install-help details[data-expanded="false"] summary > span { transform: rotate(0); }
 .footer-links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 22px; padding-block: 24px; border-top: 1px solid #18251e50; }

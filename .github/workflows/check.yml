@@ -13,5 +13,6 @@ jobs:
       - run: node scripts/check.mjs
       - run: node --check dist/app.js
       - run: node --check dist/motion.mjs
+      - run: node --check dist/accordion.mjs
       - run: node --test scripts/motion.test.mjs
       - run: git diff --check
