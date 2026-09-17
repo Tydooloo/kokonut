@@ -1,5 +1,5 @@
 // Decorative motion never owns scrolling or hides content. One frame reads all
-// visible scenes before writing transforms; nothing runs continuously at rest.
+// visible scenes before writing transforms. The CSS banner loop is visibility-gated.
 export function sceneProgress(top, height, viewportHeight) {
   const span = (height + viewportHeight) / 2;
   if (!Number.isFinite(span) || span <= 0 || !Number.isFinite(top)) return 0;
@@ -34,6 +34,7 @@ export function setupMotion(win = window, doc = document) {
   const observer = new win.IntersectionObserver(entries => {
     if (!enabled) return;
     for (const entry of entries) {
+      entry.target.classList.toggle('scene-visible', entry.isIntersecting);
       if (entry.isIntersecting) active.add(entry.target);
       else active.delete(entry.target);
     }
@@ -53,9 +54,11 @@ export function setupMotion(win = window, doc = document) {
     if (frame) win.cancelAnimationFrame(frame);
     frame = 0;
     for (const scene of scenes) {
+      scene.classList.remove('scene-visible');
       scene.style.removeProperty('--scene-progress');
       if (enabled) observer.observe(scene);
     }
+    doc.dispatchEvent(new Event('kokonut:motionchange'));
   }
   function toggleMotion() { paused = !paused; synchronize(); }
   function onVisibility() {
@@ -78,7 +81,10 @@ export function setupMotion(win = window, doc = document) {
     active.clear();
     if (frame) win.cancelAnimationFrame(frame);
     doc.documentElement.classList.remove('motion-enabled');
-    for (const scene of scenes) scene.style.removeProperty('--scene-progress');
+    for (const scene of scenes) {
+      scene.style.removeProperty('--scene-progress');
+      scene.classList.remove('scene-visible');
+    }
     preference.removeEventListener('change', synchronize);
     toggle?.removeEventListener('click', toggleMotion);
     if (toggle) toggle.hidden = true;

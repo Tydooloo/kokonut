@@ -8,6 +8,11 @@ function harness(reduced = false) {
   const classes = new Set();
   const scenes = [0, 1].map(id => ({
     values: new Map(),
+    classes: new Set(),
+    classList: {
+      toggle(name,on) { if(on) scenes[id].classes.add(name); else scenes[id].classes.delete(name); },
+      remove(name) {scenes[id].classes.delete(name);},
+    },
     getBoundingClientRect() { trace.push(`read${id}`); return {top: 200, height: 400}; },
     style: {
       setProperty(key, value) { trace.push(`write${id}`); scenes[id].values.set(key, value); },
@@ -57,12 +62,14 @@ test('progress is bounded across entering, centered and leaving scenes', () => {
 test('scroll bursts share one frame, read before writing, then stop at rest', () => {
   const h=harness();
   h.intersect();
+  assert.equal(h.scenes[0].classes.has('scene-visible'),true);
   for(let i=0;i<20;i++) h.win.dispatchEvent(new Event('scroll'));
   assert.equal(h.frames.size,1);
   h.flush();
   assert.deepEqual(h.trace,['read0','read1','write0','write1']);
   assert.equal(h.frames.size,0);
   h.intersect(false);
+  assert.equal(h.scenes[0].classes.has('scene-visible'),false);
   h.win.dispatchEvent(new Event('scroll'));
   assert.equal(h.frames.size,0,'no frames for offscreen scenes');
   h.cleanup();

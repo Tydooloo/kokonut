@@ -1,6 +1,7 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import assert from 'node:assert/strict';
+import {pages} from './layout.mjs';
 const root = resolve('dist');
 const files = readdirSync(root, {recursive:true}).filter(file=>file.endsWith('.html'));
 let count=0;
@@ -9,6 +10,9 @@ for(const file of files){
   assert.equal((html.match(/<h1\b/g)||[]).length,1,`${file}: one primary heading`);
   assert.match(html, /name="viewport"/, `${file}: mobile viewport`);
   assert.match(html, /<title>[^<]+<\/title>/, `${file}: page title`);
+  const footer=html.match(/<footer\b[^]*?<\/footer>/)?.[0];
+  assert.ok(footer, `${file}: footer navigation`);
+  for(const [,path] of pages) assert.ok(footer.includes(`href="${path}"`), `${file}: missing footer page ${path}`);
   const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(match=>match[1]);
   assert.equal(new Set(ids).size, ids.length,`${file}: duplicate IDs`);
   for(const match of html.matchAll(/(?:href|src)="([^"]+)"/g)){
