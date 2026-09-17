@@ -7,10 +7,10 @@ Deployed and verified on 17 September 2026.
 - Hosting address: https://kokonut.aaronko1005.chatgpt.site
 - Website source: https://github.com/Tydooloo/kokonut
 - APK release: https://github.com/Tydooloo/kokonut/releases/tag/android-test-2026-09-17
-- Live website source revision: `992849e15a89d8cad21a6521f3eb2bbd7621304f`
-- Passing CI for that revision: https://github.com/Tydooloo/kokonut/actions/runs/35203075033
-- Published design version: 2
-- Successful deployment: `appgdep_6aabad9fbb648191b83c293cb640be1c`
+- Live website source revision: `69b177c3c3f858a63ae958402d820c22d9aa1d58`
+- Passing CI for that revision: https://github.com/Tydooloo/kokonut/actions/runs/35209053103
+- Published design version: 3
+- Successful deployment: `appgdep_6aabbcc997e8819189ee70274a6264cb`
 
 ## Domain
 
@@ -33,6 +33,8 @@ All three public GitHub APK URLs responded without authentication, with an attac
 The optional `_headers` file is included for compatible static hosts. This Sites deployment did not return its custom CSP or nosniff headers in the checked CSS response; do not claim those headers are active here.
 
 The version 2 design was checked on both kokonut.cc and www.kokonut.cc. Homepage and all three app-page HTML match the tested source after excluding Cloudflare's observed per-request browser-check script. CSS, application JavaScript, the motion module, original coconut SVG and all three official app icon assets match byte-for-byte. The motion module is served as JavaScript. The public homepage initialized the motion controls correctly, displayed Kokonut with a capital K and the original coconut, and had no horizontal overflow. All three public APK response checks passed again.
+
+Version 3 restores the original hero hover/focus animation, removes the sticker, adds a continuously tiled banner, animates FAQ disclosures, improves highlighted button contrast and puts the complete footer on every page. All seven live HTML files match the tested source after excluding the same Cloudflare addition; CSS, app JavaScript, motion and accordion modules match exactly, and both modules have JavaScript MIME types. Both domain homepages match. The live browser confirmed three banner tiles, eight footer destinations, no sticker, working motion initialization and no horizontal overflow. The version 3 changes do not alter APK binaries or their URLs.
 
 ## Future publication
 
