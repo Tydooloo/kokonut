@@ -12,4 +12,6 @@ jobs:
           node-version: 24
       - run: node scripts/check.mjs
       - run: node --check dist/app.js
+      - run: node --check dist/motion.mjs
+      - run: node --test scripts/motion.test.mjs
       - run: git diff --check
