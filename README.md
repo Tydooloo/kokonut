@@ -1,6 +1,6 @@
 # Kokonut
 
-The independent home for SideQuest, Macrova and Revisen at https://kokonut.cc.
+The independent home for SideQuest, Haste and Revisen at https://kokonut.cc.
 
 This is a fresh website repository. App source, credentials, accounts and Git histories remain in their own projects. Only public website assets and release metadata belong here.
 

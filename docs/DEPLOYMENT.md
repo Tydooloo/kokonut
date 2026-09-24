@@ -26,7 +26,7 @@ Both hostnames are registered to the Site in `.openai/hosting.json`. Their `_ope
 
 ## Live checks
 
-The homepage, `/sidequest/`, `/macrova/`, `/revisen/`, `/releases/` and `/privacy/` responded with HTTP 200 at the hosting address. The homepage, all app pages and release page also responded with HTTP 200 on kokonut.cc. The www homepage and SideQuest page returned the correct pages over HTTPS. The public release manifest contains all three apps, and an unknown route returns HTTP 404.
+The homepage, `/sidequest/`, `/haste/`, `/revisen/`, `/releases/` and `/privacy/` responded with HTTP 200 at the hosting address. The homepage, all app pages and release page also responded with HTTP 200 on kokonut.cc. The www homepage and SideQuest page returned the correct pages over HTTPS. The public release manifest contains all three apps, and an unknown route returns HTTP 404.
 
 All three public GitHub APK URLs responded without authentication, with an attachment disposition, the recorded Content-Length and the APK ZIP header. GitHub's stored SHA-256 digest matches each locally inspected file. A physical phone installation was not performed in this task.
 

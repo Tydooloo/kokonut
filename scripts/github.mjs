@@ -21,7 +21,7 @@ if (command === 'account') {
   const user = await api('/user');
   console.log(JSON.stringify({ login: user.login }));
 } else if (command === 'create') {
-  const repo = await api('/user/repos', { method: 'POST', body: JSON.stringify({ name: args[0], description: 'Kokonut — the home of SideQuest, Macrova and Revisen. Website and Android test downloads.', homepage: 'https://kokonut.cc', private: false, auto_init: false }) });
+  const repo = await api('/user/repos', { method: 'POST', body: JSON.stringify({ name: args[0], description: 'Kokonut — the home of SideQuest, Haste and Revisen. Website and Android test downloads.', homepage: 'https://kokonut.cc', private: false, auto_init: false }) });
   console.log(JSON.stringify({ url: repo.html_url, remote: repo.clone_url, name: repo.full_name }));
 } else if (command === 'release') {
   const [repo, tag, notes] = args;

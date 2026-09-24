@@ -26,15 +26,15 @@
       "url": "https://github.com/Tydooloo/kokonut/releases/download/android-test-2026-09-17/sidequest-1.0.0-test.apk"
     },
     {
-      "id": "macrova",
-      "name": "Macrova",
-      "version": "0.1.0",
-      "packageName": "com.example.macrova",
-      "notes": "Manual food logging works on-device. AI estimation and USDA lookup need a configured, reachable Macrova backend; no public backend is supplied by this download. Account features require Firebase setup. Food logs stay on this device. This development build is intended for local feature testing.",
-      "file": "macrova-0.1.0-test.apk",
-      "bytes": 127614716,
-      "sha256": "76c7c0e2639a65ae57babaea3daa7028f34bb3f46f1515847febc5457d684b02",
-      "certificateSha256": "cd1271bd466652a7754b04b8cec6e5f4129f22a25a0d39e8e4f7e76e90538bdd",
+      "id": "haste",
+      "name": "Haste",
+      "version": "1.0.0",
+      "packageName": "com.kokonut.haste",
+      "notes": "Haste is an Android test build with local food journaling, hosted Firebase accounts, food search, and optional AI estimates through the Haste API. Review estimates before saving. Journals in previous test packages do not transfer automatically.",
+      "file": "haste-1.0.0-test.apk",
+      "bytes": 77317193,
+      "sha256": "4dff606ef9c7efb70ec950772164239632f44fd95256873ad3663e1245000514",
+      "certificateSha256": "0a976bda96008bb3adc055a2444f7df014f95258c0141aae885f5810c349e193",
       "versionCode": 1,
       "minSdk": 24,
       "minAndroid": "7.0",
@@ -43,8 +43,8 @@
         "armeabi-v7a",
         "x86_64"
       ],
-      "buildType": "debug",
-      "url": "https://github.com/Tydooloo/kokonut/releases/download/android-test-2026-09-17/macrova-0.1.0-test.apk"
+      "buildType": "release",
+      "url": "https://github.com/Tydooloo/kokonut/releases/download/haste-1.0.0-test-2026-09-24/haste-1.0.0-test.apk"
     },
     {
       "id": "revisen",

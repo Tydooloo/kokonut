@@ -33,7 +33,7 @@ assert.equal(manifest.releases.length,3);
 for(const app of manifest.releases){
   const url=new URL(app.url);
   assert.equal(url.origin,'https://github.com');
-  assert.ok(url.pathname.startsWith(`/Tydooloo/kokonut/releases/download/${manifest.tag}/`));
+  assert.ok(url.pathname.startsWith('/Tydooloo/kokonut/releases/download/'));
   assert.match(app.sha256,/^[a-f0-9]{64}$/);
   assert.ok(app.bytes>0&&app.minSdk===24);
   for(const file of ['index.html',`${app.id}/index.html`,'releases/index.html']) assert.ok(readFileSync(join(root,file),'utf8').includes(app.url),`${file}: missing ${app.name} download`);

@@ -1,5 +1,5 @@
 export const pages = [
-  ['Home', '/'], ['SideQuest', '/sidequest/'], ['Macrova', '/macrova/'],
+  ['Home', '/'], ['SideQuest', '/sidequest/'], ['Haste', '/haste/'],
   ['Revisen', '/revisen/'], ['Release details', '/releases/'], ['Website privacy', '/privacy/'],
 ];
 
