@@ -33,7 +33,7 @@
       "notes": "Haste is an Android test build with local food journaling, hosted Firebase accounts, food search, and optional AI estimates through the Haste API. Review estimates before saving. Journals in previous test packages do not transfer automatically.",
       "file": "haste-1.0.0-test.apk",
       "bytes": 77317193,
-      "sha256": "4dff606ef9c7efb70ec950772164239632f44fd95256873ad3663e1245000514",
+      "sha256": "5c6271f3de4e30481887b7bc2494995c832d73d6b602ce01f4d611c33bfefa43",
       "certificateSha256": "0a976bda96008bb3adc055a2444f7df014f95258c0141aae885f5810c349e193",
       "versionCode": 1,
       "minSdk": 24,
