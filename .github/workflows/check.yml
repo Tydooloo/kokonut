@@ -13,6 +13,9 @@ jobs:
       - run: node scripts/check.mjs
       - run: node --check dist/app.js
       - run: node --check dist/motion.mjs
-      - run: node --check dist/accordion.mjs
+      - run: node --check dist/orbit.mjs
+      - run: node --check dist/orbit-motion.mjs
+      - run: node --check dist/scenes.mjs
       - run: node --test scripts/motion.test.mjs
+      - run: node --test scripts/orbit.test.mjs
       - run: git diff --check

@@ -1,29 +1,59 @@
 # Kokonut
 
-The independent home for SideQuest, Haste and Revisen at https://kokonut.cc.
+Independent software and curious hardware. A portfolio for **SideQuest**, **Haste**, **Revisen**, and the **VST Pedal** hardware concept.
 
-This is a fresh website repository. App source, credentials, accounts and Git histories remain in their own projects. Only public website assets and release metadata belong here.
+Four product cards move around the original Kokonut coconut icon in one live 3D scene. A larger foreground card holds focus for 3.8 seconds, followed by a snappy 0.82-second transition to the next product. Blender models float and tilt more visibly inside the cards. Dragging or keyboard input selects a product; page scrolling never drives the carousel. A small pause button stops automatic rotation while the floating models continue. Every card opens its own page. The pedal is explicitly a concept; no prototype, compatibility or download is claimed.
 
-Built with semantic HTML, responsive CSS and small progressive JavaScript. The website lives in `dist/` and works without a frontend framework or build step.
+## Preview locally
 
-## Local preview
+```sh
+node scripts/serve.mjs
+```
 
-Run `node scripts/serve.mjs`, then visit http://localhost:4173.
+Open **http://localhost:4173**. No package installation or frontend build is required. The server uses the production security headers.
 
-## Android test releases
+## Edit the website
 
-APKs are distributed as public GitHub Release assets, never committed to Git. Each release records the Android package, version, byte size, signing certificate and SHA-256 checksum. These initial APKs came from existing build outputs; their exact source revisions are not attested. The website discloses any backend setup required by a test build.
+- `scripts/content.mjs` — project names, descriptions, features and setup notes.
+- `scripts/build.mjs` — all eight HTML pages and the sitemap.
+- `scripts/layout.mjs` — common header, footer and document metadata.
+- `dist/styles.css` — the complete responsive visual system.
+- `dist/orbit.mjs` — homepage scene, perspective card links, Blender playback, gestures and keyboard access.
+- `dist/orbit-motion.mjs` — product reading intervals, timed snap transitions and manual selection.
+- `dist/scenes.mjs` — independent model views on the project detail pages.
+- `dist/motion.mjs` — reduced-motion preference and synchronized pause controls.
+- `dist/releases/manifest.json` — existing Android release metadata; the redesign leaves it unchanged.
 
-## Delivery
+After changing page content or release data, run `node scripts/build.mjs`. The older `render-app-pages.mjs` and `render-releases.mjs` commands delegate to this build, so they cannot restore the previous design.
 
-Meaningful milestones are committed and pushed independently. Sites serves the website; the custom domain is configured through its DNS owner.
+## Blender source
 
-## Checks and content updates
+Open **`art/kokonut-collection.blend`** in Blender. It contains four original product sculptures, packed screen textures, studio lighting, a camera, and editable animation actions. The app interfaces are illustrative, not actual screenshots. The pedal is a concept rendering.
 
-- `node scripts/check.mjs` validates pages, links, asset references and download records. GitHub Actions runs it on pushes and pull requests.
-- `node scripts/verify-downloads.mjs` checks the public APK responses without authentication.
-- `node scripts/render-releases.mjs` regenerates the release page and homepage download buttons from `dist/releases/manifest.json`.
-- `node scripts/render-app-pages.mjs` regenerates the dedicated app pages and sitemap. Detailed app copy is maintained in that script; visual previews come from the homepage app sections.
-- `scripts/prepare-releases.mjs` describes the initial APK packaging operation. Update its release date, versions, inputs and inspected hashes deliberately when preparing a new release. Do not rerun it to replace a published release silently.
+`art/build_scene.py` recreates the scene and exports a separate animated GLB for each project. Runtime assets are in `dist/assets/3d/`; small WebP posters provide immediate artwork and a no-WebGL fallback.
 
-The app repositories are read-only inputs to this website workflow. Publishing a website or APK does not deploy or configure an app backend.
+The centre uses the existing `dist/favicon.svg` coconut icon without altering its artwork. The earlier `art/kokonut-wordmark.blend` is retained as an unused design study; the live scene does not load its GLB.
+
+To rebuild on Windows with Blender 4.5 and Python with Pillow:
+
+```powershell
+./scripts/build-art.ps1 -Blender 'C:/path/to/blender.exe' -Python 'C:/path/to/python.exe'
+node scripts/build.mjs
+```
+
+The texture generator uses the system Arial font to rasterize illustrative interfaces. It does not distribute that font. Web fonts remain the repository's existing, locally hosted DM Sans assets and licenses.
+
+Three.js 0.180.0 and its MIT license are vendored locally. `node scripts/vendor-three.mjs` refreshes that exact pinned version. The website does not contact a CDN at runtime.
+
+## Verification
+
+```sh
+node scripts/check.mjs
+node --test scripts/orbit.test.mjs scripts/motion.test.mjs
+node scripts/verify-downloads.mjs
+git diff --check
+```
+
+Static checks cover pages, anchors, assets, all four embedded GLB animations, concept status and the existing release records. Public download checks verify status, byte sizes, attachment headers and APK signatures at the start of each file. They do not install or exercise the apps.
+
+See `docs/REDESIGN.md` for design and browser verification notes. `docs/DEPLOYMENT.md` records the hosting setup and publication workflow for kokonut.cc.

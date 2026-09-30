@@ -1,13 +1,13 @@
-# Live deployment
+# Deployment setup
 
-Deployed and verified on 17 September 2026.
+Initial deployment verified on 17 September 2026. The revision, CI run and version below are historical records of that deployment; Sites holds the current publication status.
 
 - Public website: https://kokonut.cc
 - Alternate hostname: https://www.kokonut.cc
 - Hosting address: https://kokonut.aaronko1005.chatgpt.site
 - Website source: https://github.com/Tydooloo/kokonut
 - APK release: https://github.com/Tydooloo/kokonut/releases/tag/android-test-2026-09-17
-- Live website source revision: `69b177c3c3f858a63ae958402d820c22d9aa1d58`
+- Initial website source revision: `69b177c3c3f858a63ae958402d820c22d9aa1d58`
 - Passing CI for that revision: https://github.com/Tydooloo/kokonut/actions/runs/35209053103
 - Published design version: 3
 - Successful deployment: `appgdep_6aabbcc997e8819189ee70274a6264cb`
@@ -22,7 +22,7 @@ Cloudflare manages the kokonut.cc zone. The following new website records were a
 | A | @ | 172.66.3.26 | DNS only |
 | CNAME | www | custom-domains.chatgpt.site | DNS only |
 
-Both hostnames are registered to the Site in `.openai/hosting.json`. Their `_openai-site-verification` and `_cf-custom-hostname` TXT records were installed using the hosting provider's returned values. Retain the verification records. Both hostname and SSL states were confirmed active. HTTP redirects to HTTPS.
+Both hostnames are registered with Sites under the project ID recorded in `.openai/hosting.json`. Their `_openai-site-verification` and `_cf-custom-hostname` TXT records were installed using the hosting provider's returned values. Retain the verification records. Both hostname and SSL states were confirmed active. HTTP redirects to HTTPS.
 
 ## Live checks
 
@@ -40,8 +40,8 @@ Version 3 restores the original hero hover/focus animation, removes the sticker,
 
 GitHub holds the independent website history and public APK release assets. A GitHub push alone does not redeploy Sites. Keep app implementation and runtime data in their separate repositories.
 
-Regenerate changed app/release pages, run `node scripts/check.mjs`, review the changes, commit and push to GitHub. Reuse the existing Site ID. Obtain a short-lived source write credential through Sites, push the same commit to its source repository using a per-command HTTP authorization header, and never persist that credential in files or remotes. Package `.openai/hosting.json` and the public `dist/` directory, save that exact pushed version, deploy it publicly, and confirm terminal success before checking the domain.
+Regenerate changed app/release pages with `node scripts/build.mjs`, run the static checks and motion tests, review the changes, commit and push to GitHub. Reuse the existing Site ID. Follow the installed Sites hosting skill and its `site-workflow.mjs` helper to synchronize source, push the checked commit and package the public assets. Pass its short-lived source credential through hidden stdin; never persist credentials in files or remotes. Save the returned commit and archive as a version, deploy it publicly, and wait for a successful terminal deployment status.
 
 Only website assets belong in the deployment archive. APK binaries are GitHub Release assets, and credentials or app runtime data must not enter the website repository or archive.
 
-On this Windows machine, Git Bash is installed at `C:/Program Files/Git/bin/bash.exe` but is not on the default PATH. Invoke the Sites `skills/sites-hosting/scripts/package-site.sh` helper with that executable and `/c/Users/...` paths for its arguments; GNU tar interprets a `C:` archive path as a remote host. The helper-built version 2 archive was validated before saving.
+On this Windows machine, Git Bash is installed at `C:/Program Files/Git/bin/bash.exe` but is not on the default PATH. For the workflow process, prepend Git's `bin` and `usr/bin` directories to PATH and set `TAR_OPTIONS=--force-local`, so GNU tar accepts Windows drive-letter archive paths. When invoking the shell packager directly, `/c/Users/...` argument paths also work. These environment adjustments need not be persisted.

@@ -4,10 +4,13 @@
 .sites-runtime/
 node_modules/
 artifacts/
+/outputs/
 test-results/
 playwright-report/
 *.apk
 *.zip
 *.tar.gz
 *.log
-
+*.blend1
+*.blend2
+art/renders/

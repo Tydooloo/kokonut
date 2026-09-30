@@ -2,6 +2,7 @@ import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { resolve, join } from 'node:path';
 import assert from 'node:assert/strict';
 import {pages} from './layout.mjs';
+import {projects} from './content.mjs';
 const root = resolve('dist');
 const files = readdirSync(root, {recursive:true}).filter(file=>file.endsWith('.html'));
 let count=0;
@@ -39,4 +40,21 @@ for(const app of manifest.releases){
   for(const file of ['index.html',`${app.id}/index.html`,'releases/index.html']) assert.ok(readFileSync(join(root,file),'utf8').includes(app.url),`${file}: missing ${app.name} download`);
 }
 assert.ok(!readdirSync(root,{recursive:true}).some(path=>/\.(apk|env)$/.test(path)), 'APKs and secrets stay out of website assets');
-console.log(`PASS: ${files.length} HTML pages, ${count} local references, local fonts and all three release records.`);
+assert.equal(projects.length,4,'Four projects in the portfolio');
+for(const project of projects) {
+  const model=readFileSync(join(root,`assets/3d/${project.id}.glb`));
+  assert.equal(model.toString('ascii',0,4),'glTF',`${project.id}: valid GLB`);
+  assert.equal(model.readUInt32LE(8),model.length,`${project.id}: complete GLB`);
+  const json=JSON.parse(model.subarray(20,20+model.readUInt32LE(12)).toString());
+  assert.ok(json.animations?.some(animation=>animation.channels.length>0),`${project.id}: animation embedded`);
+  assert.ok(json.images?.every(image=>image.bufferView!==undefined),`${project.id}: textures embedded`);
+  assert.ok(statSync(join(root,`assets/3d/${project.id}.webp`)).size>0,`${project.id}: static fallback`);
+}
+const pedal=readFileSync(join(root,'pedal/index.html'),'utf8');
+assert.ok(pedal.includes('No prototype or download yet'),'Pedal remains clearly labelled as a concept');
+assert.ok(!pedal.includes('/releases/download/'),'No fictional pedal download');
+const home=readFileSync(join(root,'index.html'),'utf8');
+assert.equal((home.match(/data-orbit\s/g)||[]).length,1,'One homepage orbit');
+assert.equal((home.match(/data-project=/g)||[]).length,4,'Four semantic project links in the orbit');
+assert.ok(!home.includes('data-gallery')&&!home.includes('data-model='),'No duplicate horizontal gallery or per-card renderers');
+console.log(`PASS: ${files.length} HTML pages, ${count} local references, four animated GLBs, semantic product links, local fonts and all three release records.`);
