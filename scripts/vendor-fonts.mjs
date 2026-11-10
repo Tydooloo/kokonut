@@ -1,11 +1,11 @@
 import { mkdirSync, writeFileSync, readFileSync } from 'node:fs';
 mkdirSync('dist/assets/fonts', {recursive:true});
 mkdirSync('docs/licenses', {recursive:true});
-const response = await fetch('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400..700&family=Manrope:wght@400..800&display=swap', { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' } });
+const response = await fetch('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400..700&display=swap', { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36' } });
 if (!response.ok) throw new Error('Font stylesheet download failed');
 const css=await response.text();
 const blocks=[...css.matchAll(/\/\* latin \*\/\s*(@font-face\s*\{[^}]+\})/g)].map(match=>match[1]);
-if(blocks.length!==2) throw new Error('Expected two Latin variable font definitions');
+if(blocks.length!==1) throw new Error('Expected one Latin variable font definition');
 const local=[];
 for(const block of blocks){
   const family=block.match(/font-family: '([^']+)'/)[1];
@@ -21,4 +21,4 @@ for(const block of blocks){
 }
 const current=readFileSync('dist/styles.css','utf8');
 writeFileSync('dist/styles.css',current.replace(/^@import[^\n]*\n/,local.join('\n')+'\n'));
-console.log('Saved two local variable fonts with their OFL licenses.');
+console.log('Saved DM Sans locally with their OFL licenses.');

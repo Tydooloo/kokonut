@@ -10,12 +10,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
+      - name: Rebuild pages and confirm they match the committed output
+        run: node scripts/build.mjs && git diff --exit-code -- dist
       - run: node scripts/check.mjs
-      - run: node --check dist/app.js
-      - run: node --check dist/motion.mjs
-      - run: node --check dist/orbit.mjs
-      - run: node --check dist/orbit-motion.mjs
-      - run: node --check dist/scenes.mjs
-      - run: node --test scripts/motion.test.mjs
-      - run: node --test scripts/orbit.test.mjs
+      - name: Syntax-check every browser module
+        run: for file in dist/js/*.js; do node --check "$file"; done
+      - run: node --test scripts/site.test.mjs
       - run: git diff --check
