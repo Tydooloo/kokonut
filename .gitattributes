@@ -6,3 +6,6 @@
 
 # Preserve upstream whitespace in vendored dependencies.
 dist/vendor/** -whitespace
+
+# Upstream license texts are kept byte-for-byte.
+docs/licenses/** -whitespace
