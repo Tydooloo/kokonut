@@ -1,38 +1,276 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-import { page, escape as esc } from './layout.mjs';
-import { projects } from './content.mjs';
+import { page, escape as esc, words } from './layout.mjs';
+import { haste, pedal, studio } from './content.mjs';
+import { icon } from './icons.mjs';
+
 const manifest = JSON.parse(readFileSync('dist/releases/manifest.json', 'utf8'));
+const archived = manifest.releases.find(app => app.id === 'haste');
 const mb = bytes => `${(bytes / 1e6).toFixed(1)} MB`;
-const save = (path, html) => { mkdirSync(`dist/${path}`, { recursive: true }); writeFileSync(`dist/${path}index.html`, html); };
-const arrow = '<span aria-hidden="true">↗</span>';
-const model = (p, eager = false, controls = false) => `<div class="model-view" data-model="${p.id}" role="img" aria-label="${p.id === 'pedal' ? 'Blender visualisation of the proposed VST pedal' : `Illustrative ${p.name} interface on a 3D phone`}"><img class="model-poster" src="/assets/3d/${p.id}.webp" alt="" width="940" height="1000" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async"></div>${controls ? '<button class="motion-toggle art-motion-toggle" type="button" data-motion-toggle aria-pressed="false" aria-label="Pause animations" hidden>Pause motion</button>' : ''}`;
-const cards = projects.map(p => `<a class="orbit-card project-${p.id}" href="/${p.id}/" data-project="${p.id}" data-name="${p.name}" aria-label="${p.name}: ${p.id === 'pedal' ? 'explore the hardware concept' : 'explore and download'}"><span class="orbit-card-art"><span class="orbit-card-kind">${p.number} / ${p.id === 'pedal' ? 'HARDWARE CONCEPT' : 'ANDROID APP'}</span><img src="/assets/3d/${p.id}.webp" alt="" width="940" height="1000" decoding="async"><span class="orbit-card-name">${p.name}<span aria-hidden="true">↗</span></span></span></a>`).join('\n');
-const downloadRows = manifest.releases.map(app => {
- const p = projects.find(p => p.id === app.id);
- return `<article class="download-row" id="download-${app.id}"><a class="download-identity" href="/${app.id}/"><span class="row-number">${p.number}</span><img src="/assets/${p.icon}" alt="" width="40" height="40"><h3>${app.name}</h3></a><span class="download-version">v${app.version} <span>· ${mb(app.bytes)}</span></span><a class="download-link" href="${esc(app.url)}" aria-label="Download ${app.name} APK, ${mb(app.bytes)}">Download APK <span aria-hidden="true">↓</span></a><p>${app.id === 'revisen' ? 'A test server is required. ' : ''}<a href="/${app.id}/#test-build">Setup notes</a><span> / Android ${app.minAndroid}+</span></p></article>`;
-}).join('');
-save('', page({title: 'Kokonut — Independent software & hardware experiments', description: 'Explore the Kokonut orbit: SideQuest, Haste, Revisen and a live VST pedal concept. Independent apps and hardware experiments.', bodyClass: 'home', body: `<main id="main">
-<section class="orbit-section" id="products" aria-label="Products"><span id="work"></span><span id="apps"></span>
-<div class="orbit-topline wrap"><p>Independent software.<br>A few things in the works.</p><div class="orbit-top-actions"><span class="orbit-edition">SELECTED PRODUCTS</span><button class="orbit-autoplay" type="button" data-orbit-autoplay aria-pressed="false" aria-label="Pause automatic rotation" title="Pause automatic rotation" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6v12M16 6v12"/></svg></button></div></div>
-<div class="orbit-stage" data-orbit tabindex="0" role="region" aria-roledescription="carousel" aria-label="Four products around the Kokonut icon. Drag horizontally or use left and right arrow keys. Select a card to open its product page." aria-describedby="orbit-help"><h1 class="sr-only">Kokonut — Software & hardware experiments</h1><div class="orbit-brand" aria-hidden="true"><img src="/favicon.svg" alt="" width="180" height="180"></div><div class="orbit-links">${cards}</div></div><p class="sr-only" id="orbit-help">Select a product card to learn more. Drag horizontally or use the left and right arrow keys to choose a product. The small pause button stops automatic rotation.</p></section>
-<section class="studio-section" id="about"><div class="wrap studio-grid"><p class="eyebrow">ABOUT ME</p><div><h2>Built one idea<br>at a time.</h2><div class="studio-copy"><p>Kokonut is where I build software and try out hardware ideas. Right now, I’m working on three Android apps: making plans with friends, keeping a food journal, and finding your way through difficult coursework.</p><p>Then there’s the pedal. A hardware experiment to take Windows VST plug-ins from a DAW to a live guitar rig. Still an idea, with a lot to figure out.</p></div><a class="studio-source" href="https://github.com/Tydooloo/kokonut" target="_blank" rel="noopener noreferrer">Find me on GitHub ${arrow}</a></div></div></section>
-<section class="downloads-section wrap" id="downloads"><div class="section-heading"><p class="eyebrow">TRY THE APPS</p><h2>The download shelf.</h2><p class="section-note" data-device-notice>Free Android test builds. Read the setup notes before installing.</p></div><div class="download-list">${downloadRows}<article class="download-row concept-row"><a class="download-identity" href="/pedal/"><span class="row-number">04</span><h3>VST Pedal</h3></a><span class="download-version">Hardware concept</span><a class="download-link" href="/pedal/">Explore the idea ${arrow}</a><p>No prototype or download yet.</p></article></div><a class="quiet-link" href="/releases/">All release details & checksums ${arrow}</a></section>
-<section class="install-section wrap" id="install"><div><p class="eyebrow">A QUICK NOTE</p><h2>First time with an APK?</h2><p>These are Android test builds. They won’t install on an iPhone or iPad.</p></div><div class="install-questions"><details><summary>How do I install an app?<span aria-hidden="true">+</span></summary><div><p>Read the app’s setup notes, then download its APK. Open the file from Downloads. Android may ask you to allow installation from your browser or Files. Follow the device’s guidance, install the app, and turn off the source permission afterwards.</p></div></details><details><summary>Android won’t install the file<span aria-hidden="true">+</span></summary><div><p>Check the minimum Android version and available storage. Re-download if the file is incomplete. Managed devices and protection settings can restrict installation. Keep Play Protect enabled and follow <a href="https://support.google.com/android/answer/9457058?hl=en" target="_blank" rel="noopener noreferrer">Android’s installation guidance</a>.</p></div></details><details><summary>I have an older test build<span aria-hidden="true">+</span></summary><div><p>A compatible build normally installs as an update. A different signing certificate may prevent that. Back up or export your data before removing an app: uninstalling can erase local food logs, files and settings.</p></div></details></div></section></main>`}));
-for (const app of manifest.releases) {
- const p = projects.find(p => p.id === app.id);
- save(`${p.id}/`, page({title: `${p.name} — ${p.headline} — Kokonut`, description: p.description, path: `${p.id}/`, bodyClass: `project-page project-${p.id}`, body: `<main id="main"><div class="wrap"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/#work">All projects</a><span aria-hidden="true">/</span><span aria-current="page">${p.name}</span></nav>
-<section class="project-hero"><div class="project-hero-copy"><p class="eyebrow">${p.number} / ${p.kind.toUpperCase()}</p><div class="app-name"><img src="/assets/${p.icon}" width="42" height="42" alt="">${p.name}</div><h1>${p.headline}</h1><p class="project-description">${p.description}</p><a class="button button-dark" href="#test-build">Get the Android build <span aria-hidden="true">↓</span></a><span class="hero-build-note">Free to try · ${app.id === 'revisen' ? 'Test server required' : 'Early access'}</span></div><div class="project-hero-art">${model(p, true, true)}<span class="model-note">ILLUSTRATIVE INTERFACE / 3D STUDY</span></div></section>
-<section class="features-section" aria-label="What you can do">${p.features.map(([title, description], i) => `<article><span class="eyebrow">0${i + 1}</span><h2>${title}</h2><p>${description}</p></article>`).join('')}</section>
-<section class="app-test-build" id="test-build"><div class="test-build-copy"><p class="eyebrow">YOURS TO TRY / ANDROID</p><h2>${p.firstTitle}</h2><p>${p.first}</p><p class="app-caveat">${p.caveat}</p></div><div class="app-download-panel"><span class="build-badge">${app.id === 'revisen' ? 'BACKEND SETUP REQUIRED' : 'ANDROID TEST BUILD'}</span><h3>${app.name}<span> ${app.version}</span></h3><dl><div><dt>File size</dt><dd>${mb(app.bytes)}</dd></div><div><dt>Requires</dt><dd>Android ${app.minAndroid}+</dd></div><div><dt>Published</dt><dd>${app.id === 'haste' ? '24' : '17'} Sep 2026</dd></div></dl><a class="button button-dark" href="${esc(app.url)}" aria-label="Download ${p.name} APK, ${mb(app.bytes)}">Download APK <span aria-hidden="true">↓</span></a><a class="quiet-link" href="/releases/#${app.id}">Test notes & checksum ${arrow}</a><a class="quiet-link" href="/#install">How to install</a><p class="platform-note" data-device-notice>For Android phones and tablets. APKs do not install on iPhone or iPad.</p></div></section>
-<nav class="more-projects" aria-label="More projects"><span class="eyebrow">KEEP EXPLORING</span>${projects.filter(q => q.id !== p.id).map(q => `<a href="/${q.id}/">${q.name} ${arrow}</a>`).join('')}</nav></div></main>`}));
-}
-const pedal = projects[3];
-save('pedal/', page({title: 'VST Pedal — A hardware concept by Kokonut', description: pedal.description, path: 'pedal/', bodyClass: 'project-page project-pedal', body: `<main id="main"><div class="wrap"><nav class="breadcrumb" aria-label="Breadcrumb"><a href="/#work">All projects</a><span aria-hidden="true">/</span><span aria-current="page">VST Pedal</span></nav><section class="project-hero"><div class="project-hero-copy"><p class="eyebrow">04 / HARDWARE CONCEPT</p><span class="app-name">VST Pedal</span><h1>Off the desk.<br>On the floor.</h1><p class="project-description">${pedal.description}</p><a class="button button-dark" href="#concept">Inside the idea ${arrow}</a><span class="hero-build-note">Concept only · No prototype or download yet</span></div><div class="project-hero-art">${model(pedal, true, true)}<span class="model-note">CONCEPT VISUALISATION / NOT A FINISHED PRODUCT</span></div></section>
-<section class="concept-story" id="concept"><p class="eyebrow">THE QUESTION</p><h2>Why should your<br>sound stay at home?</h2><div><p>DAWs put a world of guitar effects within reach. Taking those exact sounds to a live show often means bringing a computer along, too.</p><p>The idea is a guitar pedal that runs Windows VST plug-ins itself: a physical home for a software signal chain, built around the way you play.</p><p class="concept-status">This is an early concept. Hardware, plug-in compatibility, latency, controls and release plans are still to be worked out. The model shows a possible direction, not a working prototype.</p></div></section>
-<section class="features-section" aria-label="Questions to explore"><article><span class="eyebrow">01 / THE SOUND</span><h2>Your existing plug-ins.</h2><p>Explore whether familiar Windows VST effects can live in a dedicated pedal format.</p></article><article><span class="eyebrow">02 / THE FEEL</span><h2>Made for the floor.</h2><p>Find the right balance of tactile controls, a footswitch, and a readable live interface.</p></article><article><span class="eyebrow">03 / THE CHALLENGE</span><h2>Ready for a real stage.</h2><p>Investigate audio latency, reliability and plug-in hosting before promising a product.</p></article></section><nav class="more-projects" aria-label="More projects"><span class="eyebrow">MEANWHILE, TRY THE APPS</span>${projects.slice(0,3).map(p => `<a href="/${p.id}/">${p.name} ${arrow}</a>`).join('')}</nav></div></main>`}));
-const entries = manifest.releases.map(app => `<article class="release-entry" id="${app.id}"><div class="release-title"><h2>${app.name}</h2><a href="/${app.id}/">About the app ${arrow}</a></div><p class="release-note">${esc(app.notes)}</p><dl class="release-facts"><dt>Version</dt><dd>${app.version} (build ${app.versionCode}) · ${app.buildType === 'release' ? 'Signed test build' : 'Development test build'}</dd><dt>Published</dt><dd>${app.id === 'haste' ? '24' : '17'} September 2026</dd><dt>Download</dt><dd>${mb(app.bytes)} · ${app.bytes.toLocaleString('en-NZ')} bytes</dd><dt>Requires</dt><dd>Android ${app.minAndroid}+ · ARM64, ARMv7 or x86-64</dd><dt>Package</dt><dd>${app.packageName}</dd></dl><div class="release-actions"><a class="button button-dark" href="${esc(app.url)}" aria-label="Download ${app.name} APK, ${mb(app.bytes)}">Download ${app.name} <span aria-hidden="true">↓</span></a><a href="/#install">Installation guide</a></div><details><summary>Verify this download <span aria-hidden="true">+</span></summary><div class="checksum-content"><p>The SHA-256 checksum identifies this exact file. The APK’s Android signing certificate was verified before upload.</p><code class="checksum">${app.sha256}</code><button class="copy-button" type="button" data-copy="${app.sha256}" aria-live="polite">Copy SHA-256</button><p>Signing certificate SHA-256</p><code class="checksum">${app.certificateSha256}</code></div></details></article>`).join('');
-save('releases/', page({title: 'Downloads & release notes — Kokonut', description: 'Download SideQuest, Haste and Revisen Android test builds. Read setup requirements and verify file checksums.', path: 'releases/', body: `<main class="prose wrap" id="main"><p class="eyebrow">THE DOWNLOAD SHELF</p><h1>Ready when<br>you are.</h1><p class="prose-lead" data-device-notice>Three apps. Free Android test builds. Pick one, read the notes, and make it yours.</p><p>These APKs are for Android phones and tablets. They are not Google Play releases and cannot be installed on iPhone or iPad. Installing a newer build does not guarantee compatibility with saved test data.</p>${entries}<aside class="release-concept"><span class="eyebrow">04 / STILL AN IDEA</span><h2>Looking for the pedal?</h2><p>The VST Pedal is a hardware concept. There is no prototype or download available yet.</p><a href="/pedal/">Explore the concept ${arrow}</a></aside><h2>About the files</h2><p>APKs are public GitHub Release assets. A GitHub account is not required. All three files passed Android signature verification before their original publication. Their recorded sizes and hashes identify those files; they do not verify every app feature or every phone.</p><p><a href="${manifest.releaseUrl}">SideQuest & Revisen release</a> · <a href="https://github.com/Tydooloo/kokonut/releases/tag/haste-1.0.0-test-2026-09-24">Haste release</a> · <a href="/releases/manifest.json">Release manifest</a></p></main>`}));
-save('privacy/', page({title: 'Website privacy — Kokonut', description: 'How the Kokonut website handles visitor information and Android download links.', path: 'privacy/', body: `<main class="prose wrap" id="main"><p class="eyebrow">WEBSITE PRIVACY</p><h1>A little clarity.</h1><p>This page covers the Kokonut website. It does not replace privacy information for SideQuest, Haste or Revisen, which have their own accounts, storage and services.</p><h2>Browsing the website</h2><p>The website code does not use analytics, advertising trackers, sign-up forms, cookies or local storage. It does not request your location, camera, microphone or contacts. Motion preferences last for the current page visit only.</p><p>Hosting and network providers may process ordinary technical request information, including IP addresses, requested URLs and browser information, to serve and protect the site. Fonts, 3D models, scripts and images are served with the website.</p><h2>Downloading an app</h2><p>APK download buttons lead to public files hosted by GitHub. GitHub processes the request under its own privacy terms. Downloading a file does not create an app account. When you open an app, its own permissions and data handling apply.</p><h2>Your device</h2><p>The website checks your browser’s device information locally to display installation guidance for iPhone and iPad visitors. That check is not sent to an analytics service. Copy buttons write to the clipboard only when you press them. Interactive 3D is optional: the project artwork and links also work without it.</p><p><a href="/">Return to the collection</a> · <a href="/releases/">App test notes</a></p></main>`}));
-writeFileSync('dist/404.html', page({title: 'Page not found — Kokonut', description: 'That page has wandered off. Return to the Kokonut project collection.', body: `<main class="prose wrap not-found" id="main"><p class="eyebrow">404 / A SMALL DETOUR</p><h1>This one<br>wandered off.</h1><p>The page may have moved. There are still a few good things to explore.</p><a class="button button-dark" href="/">Back to the collection ${arrow}</a></main>`}));
-writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['', ...projects.map(p=>p.id+'/'), 'releases/', 'privacy/'].map(path => `<url><loc>https://kokonut.cc/${path}</loc></url>`).join('')}</urlset>\n`);
-console.log('Built eight pages from shared content and the unchanged Android release manifest.');
+// Template lines whose interpolation is empty would leave trailing spaces and blank lines.
+const tidy = html => html.replace(/[ \t]+$/gm, '').replace(/\n{2,}/g, '\n');
+const save = (path, html) => { mkdirSync(`dist/${path}`, { recursive: true }); writeFileSync(`dist/${path}index.html`, tidy(html)); };
+const ext = 'target="_blank" rel="noopener noreferrer"';
+
+/* ---------- Shared components ---------- */
+
+const head = ({ eyebrow, title, lead, id = '', center = false, level = 'h2' }) => `<div class="section-head${center ? ' is-center' : ''}">
+  <p class="eyebrow reveal">${eyebrow}</p>
+  <${level} class="headline" data-words${id ? ` id="${id}"` : ''}>${words(title)}</${level}>
+  ${lead ? `<p class="lead reveal" style="--i:2">${lead}</p>` : ''}
+</div>`;
+
+const hasteIcon = (size = 28) => `<img class="app-icon" src="/assets/haste/icon.webp" alt="" width="${size}" height="${size}">`;
+
+const phoneStage = () => `<div class="phone-stage" data-phone role="img" aria-label="The Haste app on a 3D phone, showing the ${haste.screens[0].label} screen">
+  <div class="stage-fallback phone-fallback">${haste.screens.map((s, i) => `<img src="/assets/haste/screen-${s.id}.webp" alt="" width="660" height="1434" decoding="async" loading="${i ? 'lazy' : 'eager'}"${i ? ' hidden' : ''}>`).join('')}</div>
+  <canvas aria-hidden="true"></canvas>
+  <p class="stage-hint" aria-hidden="true">Drag to rotate</p>
+</div>
+<div class="screen-tabs" role="group" aria-label="Choose an app screen">${haste.screens.map((s, i) => `<button type="button" data-screen="${i}" aria-pressed="${i === 0}">${s.label}</button>`).join('')}</div>`;
+
+const story = () => `<div class="story" data-story>
+  <div class="story-visual"><div class="story-sticky">${phoneStage()}</div></div>
+  <ol class="story-steps">${haste.screens.map((s, i) => `<li class="story-step" data-step="${i}"><span class="step-num">0${i + 1} · ${s.label}</span><h3>${s.title}</h3><p>${s.text}</p></li>`).join('')}</ol>
+</div>`;
+
+const bento = () => `<div class="bento">${haste.features.map((f, i) => `<article class="card spotlight reveal${f.size ? ` is-${f.size}` : ''}" style="--i:${i % 4}">
+  <span class="card-icon">${icon(f.icon)}</span>
+  ${f.stat ? `<p class="card-stat"><span data-count="${f.stat}">${f.stat}</span><small>${f.statLabel}</small></p>` : ''}
+  <h3>${f.title}</h3><p>${f.text}</p>
+</article>`).join('')}</div>`;
+
+const platforms = () => `<div class="platforms">${haste.platforms.map((p, i) => `<article class="platform card reveal" style="--i:${i}">
+  <div class="platform-top"><span class="card-icon">${icon(p.icon)}</span><span class="status status-${p.tone}"><i></i>${p.status}</span></div>
+  <h3>${p.name}</h3><p>${p.text}</p>
+</article>`).join('')}</div>`;
+
+const pedalFallback = `<svg viewBox="0 0 300 380" class="pedal-svg" aria-hidden="true"><rect x="20" y="10" width="260" height="360" rx="26" fill="#e6dfcf"/><rect x="62" y="40" width="176" height="52" rx="8" fill="#14110e"/><path d="M78 70h20l8-12 10 22 9-16 8 6h27" stroke="#ff8a3d" stroke-width="3" fill="none"/>${[75, 150, 225].map(x => `<circle cx="${x}" cy="150" r="27" fill="#1d1d1f"/><path d="M${x} 150v-20" stroke="#e6dfcf" stroke-width="4" stroke-linecap="round"/>`).join('')}<circle cx="150" cy="222" r="7" fill="#ff8a3d"/><circle cx="150" cy="300" r="34" fill="#b9b6ae"/><circle cx="150" cy="300" r="22" fill="#d9d6ce"/></svg>`;
+
+const pedalLab = () => `<div class="pedal-lab" data-pedal-lab>
+  <div class="pedal-stage" data-pedal role="img" aria-label="Interactive 3D model of the VST Pedal concept">
+    <div class="stage-fallback">${pedalFallback}</div>
+    <canvas aria-hidden="true"></canvas>
+    <p class="stage-hint" aria-hidden="true">Turn a knob · Stomp the switch · Drag to look around</p>
+  </div>
+  <div class="pedal-console">
+    <button class="play-button" type="button" data-pedal-play aria-pressed="false"><span class="play-icon">${icon('play')}</span><span class="pause-icon">${icon('pause')}</span><span data-play-label>Play the demo riff</span></button>
+    <div class="pedal-knobs">${[['drive', 'Drive', 62], ['tone', 'Tone', 55], ['mix', 'Space', 40]].map(([id, label, value]) => `<label class="knob-control"><span>${label}</span><input type="range" min="0" max="100" value="${value}" data-param="${id}"><output>${value}</output></label>`).join('')}</div>
+    <button class="bypass-button" type="button" data-pedal-bypass aria-pressed="true"><i></i><span data-bypass-label>Effect on</span></button>
+    <p class="console-note">${icon('sound')} Synthesised live in your browser with the Web Audio API. A sketch of the feel, not a VST host. Yet.</p>
+  </div>
+</div>`;
+
+const roadmap = () => `<ol class="roadmap">${pedal.roadmap.map(([n, title, text, now], i) => `<li class="reveal${now ? ' is-now' : ''}" style="--i:${i}"><span class="road-num">${n}${now ? '<b>Now</b>' : ''}</span><h3>${title}</h3><p>${text}</p></li>`).join('')}</ol>`;
+
+const questions = () => `<div class="questions">${pedal.questions.map((q, i) => `<article class="card spotlight reveal" style="--i:${i}"><span class="card-icon">${icon(q.icon)}</span><h3>${q.title}</h3><p>${q.text}</p></article>`).join('')}</div>`;
+
+const tickerItems = ['Haste 1.2.10 — testing on Google Play', 'Haste for iPhone — in preparation', 'VST Pedal — concept stage', 'No ads. No trackers.', 'Voice transcribed on-device', 'Made in New Zealand'];
+const ticker = () => `<div class="ticker" role="region" aria-label="Studio status"><div class="ticker-track">${[0, 1].map(copy => `<ul${copy ? ' aria-hidden="true"' : ''}>${tickerItems.map(item => `<li>${item}</li>`).join('')}</ul>`).join('')}</div></div>`;
+
+/* ---------- Home ---------- */
+
+save('', page({
+  title: 'Kokonut — Independent software & hardware',
+  description: 'Kokonut is an independent New Zealand studio. Meet Haste, the food journal you can talk to, and the VST Pedal, a hardware concept for guitarists.',
+  bodyClass: 'home',
+  body: `<main id="main">
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-visual" data-particles><canvas aria-hidden="true"></canvas><img class="hero-fallback" src="/favicon.svg" alt="" width="420" height="420"></div>
+  <div class="wrap hero-inner">
+    <p class="kicker reveal"><span class="pulse" aria-hidden="true"></span>Independent studio · New Zealand</p>
+    <h1 class="display" id="hero-title" data-words>${words('Tools that get|out of *your way.*')}</h1>
+    <p class="hero-lead reveal" style="--i:3">Kokonut makes fast, private software for everyday life, and hardware ideas for the stage. Fewer things, made properly.</p>
+    <div class="hero-actions reveal" style="--i:4"><a class="btn btn-primary" data-magnetic href="#haste">Meet Haste ${icon('arrowRight')}</a><a class="btn btn-ghost" href="#pedal">Play with the pedal</a></div>
+  </div>
+  <div class="wrap hero-foot">
+    <div class="morph-switch" role="group" aria-label="Change the particle sculpture" data-morph-switch>
+      ${['Kokonut', 'Haste', 'VST Pedal'].map((label, i) => `<button type="button" data-morph="${i}" aria-pressed="${i === 0}">${label}<i aria-hidden="true"></i></button>`).join('')}
+    </div>
+    <a class="scroll-cue" href="#haste"><span>Scroll</span>${icon('arrowDown')}</a>
+  </div>
+</section>
+${ticker()}
+<section class="section haste-section" id="haste" data-section="haste">
+  <div class="wrap">
+    ${head({ eyebrow: `${hasteIcon()} Haste · Food journal`, title: 'Log a meal in the time|it takes to *say it.*', lead: haste.description })}
+    ${story()}
+    ${bento()}
+    ${platforms()}
+    <div class="cta-strip reveal"><div><h3>Want in early?</h3><p>Haste is in closed testing. Send us the email on your Google account and we’ll add you.</p></div><div class="cta-actions"><a class="btn btn-primary" data-magnetic href="${haste.betaMail}">Join the beta ${icon('arrowRight')}</a><a class="btn btn-ghost" href="/haste/">Everything about Haste</a></div></div>
+  </div>
+</section>
+<section class="section pedal-section" id="pedal" data-section="pedal">
+  <div class="wrap">
+    ${head({ eyebrow: '<span class="tag-concept">Concept</span> VST Pedal · Hardware', title: 'Your plug-ins.|On the *floor.*', lead: pedal.description })}
+    ${pedalLab()}
+    ${roadmap()}
+    <p class="section-link reveal"><a class="text-link" href="/pedal/">Inside the idea: latency, hosting and the hard questions ${icon('arrowRight')}</a></p>
+  </div>
+</section>
+<section class="section studio-section" id="studio" data-section="studio">
+  <div class="wrap">
+    <div class="studio-grid">
+      ${head({ eyebrow: 'The studio', title: 'Built one idea|at a *time.*' })}
+      <div class="studio-copy reveal" style="--i:1"><p>Kokonut is a small, independent studio. I design, build and ship everything here myself, from the database schema to the last pixel, and I’d rather make one thing properly than five things halfway.</p><p>Right now that means Haste, and a guitar pedal I can’t stop thinking about.</p></div>
+    </div>
+    <div class="principles">${[
+      ['lock', 'Private by default', 'No ads, no trackers, no analytics on this site. Voice stays on the device. Data leaves your phone only when a feature needs it.'],
+      ['bolt', 'Fast is a feature', 'If logging a meal takes longer than eating it, people stop. Every screen is designed around the fewest taps.'],
+      ['review', 'Honest about what’s ready', 'Testing means testing. Concepts are labelled as concepts. Estimates are shown as estimates.'],
+    ].map(([ic, t, d], i) => `<article class="principle reveal" style="--i:${i}"><span class="card-icon">${icon(ic)}</span><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>
+    <dl class="stats">${[
+      [469, '', 'cited NZ food servings in Haste'],
+      [0, '', 'ads or third-party trackers'],
+      [2, '', 'platforms from one Flutter codebase'],
+      [100, '%', 'on-device voice transcription'],
+    ].map(([n, unit, label], i) => `<div class="stat reveal" style="--i:${i}"><dt>${label}</dt><dd><span data-count="${n}">${n}</span>${unit}</dd></div>`).join('')}</dl>
+    <div class="stack reveal"><h3>Built with</h3><ul>${['Flutter', 'Dart', 'Supabase', 'Postgres', 'Edge Functions', 'whisper.cpp', 'Kotlin widgets', 'Swift packages', 'Three.js', 'WebGL shaders', 'Web Audio'].map(t => `<li>${t}</li>`).join('')}</ul></div>
+  </div>
+</section>
+<section class="section contact-section" id="contact" data-section="contact">
+  <div class="wrap">
+    <p class="eyebrow reveal">Contact</p>
+    <h2 class="mega" data-words>${words('Let’s make|something *good.*')}</h2>
+    <a class="contact-mail reveal" data-magnetic href="mailto:${studio.email}">${studio.email} ${icon('arrowUpRight')}</a>
+    <div class="contact-cards">${[
+      [haste.betaMail, 'Try Haste', 'Join the closed beta on Android.', false],
+      [`mailto:${studio.email}?subject=VST%20Pedal`, 'Talk hardware', 'Play live? Tell me about your rig.', false],
+      [studio.github, 'GitHub', 'This website’s source and releases.', true],
+    ].map(([href, t, d, external], i) => `<a class="contact-card card spotlight reveal" style="--i:${i}" href="${href}"${external ? ` ${ext}` : ''}><span><strong>${t}</strong><small>${d}</small></span>${icon('arrowUpRight')}</a>`).join('')}</div>
+  </div>
+</section>
+</main>`,
+}));
+
+/* ---------- Haste ---------- */
+
+save('haste/', page({
+  title: 'Haste — The food journal you can talk to — Kokonut',
+  description: 'Snap, say or type your meals. Haste estimates calories and macros, keeps voice on your phone and keeps your streak going. In testing on Android.',
+  path: 'haste/', bodyClass: 'product-page haste-page',
+  body: `<main id="main">
+<section class="product-hero wrap">
+  <nav class="breadcrumb reveal" aria-label="Breadcrumb"><a href="/">Kokonut</a><span aria-hidden="true">/</span><span aria-current="page">Haste</span></nav>
+  <div class="product-hero-mark reveal"><img src="/assets/haste/icon.webp" alt="Haste app icon" width="96" height="96"></div>
+  <p class="eyebrow reveal">Haste · Food journal · v${haste.version}</p>
+  <h1 class="display" data-words>${words('Food logging that|keeps *up with you.*')}</h1>
+  <p class="hero-lead reveal" style="--i:3">${haste.description}</p>
+  <div class="hero-actions reveal" style="--i:4"><a class="btn btn-primary" data-magnetic href="#get">Get Haste ${icon('arrowDown')}</a><a class="btn btn-ghost" href="#how">See how it works</a></div>
+</section>
+<section class="section" id="how"><div class="wrap">
+  ${head({ eyebrow: 'How it works', title: 'Three screens.|*That’s it.*', lead: 'Capture what you ate, check your day, watch the trend. Real screens from the app, rendered with demo data.' })}
+  ${story()}
+</div></section>
+<section class="section"><div class="wrap">
+  ${head({ eyebrow: 'Features', title: 'Small details.|*Big difference.*' })}
+  ${bento()}
+</div></section>
+<section class="section privacy-band"><div class="wrap split">
+  ${head({ eyebrow: `${icon('shield')} Privacy`, title: 'Your journal is|*nobody’s business.*' })}
+  <ul class="checklist reveal">${['Voice is transcribed on your phone. Recordings never leave it.', 'Photos are sent for an estimate only when you ask, and aren’t stored on our servers.', 'No ads, no analytics SDK, no tracking.', 'Friends see your streak, never your meals, weight or photos.', 'Delete your account and its data from Settings.'].map(t => `<li>${icon('review')}<span>${t}</span></li>`).join('')}</ul>
+</div></section>
+<section class="section" id="get"><div class="wrap">
+  ${head({ eyebrow: 'Get Haste', title: 'Ready when|*you are.*', lead: 'Haste is in closed testing on Google Play. The iPhone version is on its way.' })}
+  ${platforms()}
+  <div class="cta-strip reveal"><div><h3>Join the Android beta</h3><p>Email us from the Google account you use on your phone. We’ll add you to the testers and send the Play link.</p></div><div class="cta-actions"><a class="btn btn-primary" data-magnetic href="${haste.betaMail}">Request access ${icon('arrowRight')}</a></div></div>
+  <p class="fine reveal">Looking for the original sideload build? The <a href="/releases/">archived v${archived.version} APK</a> is still available for reference. It’s older than the Play version.</p>
+</div></section>
+<section class="section" id="support"><div class="wrap split">
+  <div>${head({ eyebrow: 'Support', title: 'Questions,|*answered.*' })}<p class="reveal support-mail">Still stuck? <a href="${haste.supportMail}">${studio.email}</a></p><p class="reveal support-links"><a class="text-link" href="${haste.privacyPolicy}" ${ext}>Privacy policy ${icon('arrowUpRight')}</a><a class="text-link" href="${haste.deleteAccount}" ${ext}>Account deletion ${icon('arrowUpRight')}</a></p></div>
+  <div class="faq reveal">${haste.faq.map(([q, a]) => `<details><summary>${q}<span aria-hidden="true"></span></summary><div><p>${a}</p></div></details>`).join('')}</div>
+</div></section>
+<nav class="next-page wrap" aria-label="Next"><a class="card spotlight" href="/pedal/"><small>Next from Kokonut</small><strong>VST Pedal</strong><span>A hardware concept for guitarists ${icon('arrowRight')}</span></a></nav>
+</main>`,
+}));
+
+/* ---------- Pedal ---------- */
+
+const flow = ['Guitar', 'Input', 'Your VST chain', 'Output', 'Amp / PA'];
+save('pedal/', page({
+  title: 'VST Pedal — A hardware concept by Kokonut',
+  description: pedal.description,
+  path: 'pedal/', bodyClass: 'product-page pedal-page',
+  body: `<main id="main">
+<section class="product-hero wrap">
+  <nav class="breadcrumb reveal" aria-label="Breadcrumb"><a href="/">Kokonut</a><span aria-hidden="true">/</span><span aria-current="page">VST Pedal</span></nav>
+  <p class="eyebrow reveal"><span class="tag-concept">Concept</span> Hardware · No prototype yet</p>
+  <h1 class="display" data-words>${words('Off the desk.|On the *floor.*')}</h1>
+  <p class="hero-lead reveal" style="--i:3">${pedal.description}</p>
+</section>
+<section class="section section-tight"><div class="wrap">${pedalLab()}</div></section>
+<section class="section"><div class="wrap split">
+  ${head({ eyebrow: 'The question', title: 'Why should your sound|*stay at home?*' })}
+  <div class="prose-block reveal"><p>A DAW puts a world of amps, pedals and spaces a click away. Getting those exact sounds onto a stage usually means bringing the computer too: a laptop on an ironing board, an audio interface, a nervous glance at the battery.</p><p>The idea is simple to say and hard to build: a pedal that hosts your Windows VST plug-ins itself. One box on the floor, your signal chain inside, real knobs and a footswitch in charge.</p><p class="note">This is an early concept. Hardware, plug-in compatibility, latency, controls and release plans are all still open. Nothing here is a product specification.</p></div>
+</div></section>
+<section class="section"><div class="wrap">
+  ${head({ eyebrow: 'Signal path', title: 'Simple on the outside.' })}
+  <ol class="flow reveal" aria-label="Proposed signal path">${flow.map((step, i) => `<li${i === 2 ? ' class="is-core"' : ''}><span>${step}</span></li>`).join('')}</ol>
+</div></section>
+<section class="section"><div class="wrap">
+  ${head({ eyebrow: 'Open questions', title: 'The hard parts,|*on purpose.*', lead: 'A concept is only useful if it’s honest about what could stop it.' })}
+  ${questions()}
+</div></section>
+<section class="section"><div class="wrap">
+  ${head({ eyebrow: 'Roadmap', title: 'Where it’s *headed.*', lead: 'A direction, not a promise. No dates until the feasibility work says yes.' })}
+  ${roadmap()}
+  <div class="cta-strip reveal"><div><h3>Play live?</h3><p>I’d love to hear what’s in your rig and what you’d want from a pedal like this.</p></div><div class="cta-actions"><a class="btn btn-primary" data-magnetic href="mailto:${studio.email}?subject=VST%20Pedal">Get in touch ${icon('arrowRight')}</a></div></div>
+</div></section>
+<nav class="next-page wrap" aria-label="Next"><a class="card spotlight" href="/haste/"><small>Next from Kokonut</small><strong>Haste</strong><span>The food journal you can talk to ${icon('arrowRight')}</span></a></nav>
+</main>`,
+}));
+
+/* ---------- Releases ---------- */
+
+save('releases/', page({
+  title: 'Release details — Kokonut',
+  description: 'How to get Haste, plus the checksum and details of the archived Android test build.',
+  path: 'releases/', bodyClass: 'prose-page',
+  body: `<main class="prose wrap" id="main">
+<p class="eyebrow reveal">Release details</p>
+<h1 class="headline" data-words>${words('Builds &|*checksums.*')}</h1>
+<p class="prose-lead reveal">Current Haste builds go out through Google Play closed testing. <a href="/haste/#get">Request access</a> to get the latest version.</p>
+<article class="release card" id="haste">
+  <div class="release-head">${hasteIcon(48)}<div><h2>Haste ${archived.version}</h2><p>Archived Android test build · ${archived.published}</p></div><span class="status status-soon"><i></i>Superseded</span></div>
+  <p>${esc(archived.notes)} This build predates the Google Play version (${haste.version}) and is kept for reference.</p>
+  <dl class="facts"><div><dt>File</dt><dd>${archived.file}</dd></div><div><dt>Size</dt><dd>${mb(archived.bytes)} (${archived.bytes.toLocaleString('en-NZ')} bytes)</dd></div><div><dt>Requires</dt><dd>Android ${archived.minAndroid}+</dd></div><div><dt>Package</dt><dd>${archived.packageName}</dd></div></dl>
+  <div class="checksums"><p>SHA-256</p><code>${archived.sha256}</code><button class="copy-button" type="button" data-copy="${archived.sha256}">Copy</button><p>Signing certificate SHA-256</p><code>${archived.certificateSha256}</code></div>
+  <a class="btn btn-ghost" href="${esc(archived.url)}">${icon('download')} Download archived APK · ${mb(archived.bytes)}</a>
+</article>
+<h2>About these files</h2>
+<p>APKs are public GitHub Release assets, so no GitHub account is needed. Android only: they won’t install on an iPhone or iPad. Installing an older build over a newer one isn’t supported. The SHA-256 above identifies the exact file; it doesn’t verify every feature on every phone.</p>
+<p><a href="${manifest.releaseUrl}">GitHub release</a> · <a href="/releases/manifest.json">Release manifest (JSON)</a></p>
+</main>`,
+}));
+
+/* ---------- Privacy ---------- */
+
+save('privacy/', page({
+  title: 'Website privacy — Kokonut',
+  description: 'How the Kokonut website handles visitor information.',
+  path: 'privacy/', bodyClass: 'prose-page',
+  body: `<main class="prose wrap" id="main">
+<p class="eyebrow reveal">Website privacy</p>
+<h1 class="headline" data-words>${words('A little|*clarity.*')}</h1>
+<p class="prose-lead reveal">This page covers kokonut.cc. Haste has its own <a href="${haste.privacyPolicy}" ${ext}>privacy policy</a>.</p>
+<h2>Browsing</h2>
+<p>This website doesn’t use analytics, advertising trackers, sign-up forms or cookies, and it doesn’t write to your browser’s storage. It never asks for your location, camera, microphone or contacts. The “Pause motion” setting lasts for the current page only.</p>
+<p>Our hosting and network providers process ordinary request information, like IP addresses, requested pages and browser details, to serve and protect the site. Fonts, scripts, 3D graphics and images all come from this website; no third-party CDN is contacted.</p>
+<h2>The pedal demo</h2>
+<p>The VST Pedal demo synthesises sound in your browser with the Web Audio API, only after you press play. Nothing is recorded and nothing is sent anywhere.</p>
+<h2>Email and downloads</h2>
+<p>Email links open your own mail app. If you write to us, we use your message only to reply. Archived APK links lead to GitHub, which handles the request under its own privacy terms.</p>
+<p><a href="/">Back to Kokonut</a></p>
+</main>`,
+}));
+
+/* ---------- 404 ---------- */
+
+writeFileSync('dist/404.html', tidy(page({
+  title: 'Page not found — Kokonut',
+  description: 'That page has wandered off.',
+  bodyClass: 'prose-page not-found',
+  body: `<main class="prose wrap" id="main"><img class="lost-coconut" src="/favicon.svg" alt="" width="120" height="120"><p class="eyebrow">404</p><h1 class="headline" data-words>${words('This one|*wandered off.*')}</h1><p class="prose-lead">The page may have moved. SideQuest and Revisen have been retired; everything else is a click away.</p><div class="hero-actions"><a class="btn btn-primary" href="/">Back home ${icon('arrowRight')}</a><a class="btn btn-ghost" href="/haste/">Haste</a></div></main>`,
+})));
+
+writeFileSync('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['', 'haste/', 'pedal/', 'releases/', 'privacy/'].map(path => `<url><loc>${studio.url}/${path}</loc></url>`).join('')}</urlset>\n`);
+console.log('Built 6 pages: home, Haste, VST Pedal, releases, privacy and 404.');
