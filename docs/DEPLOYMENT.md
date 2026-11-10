@@ -40,7 +40,7 @@ Version 3 restores the original hero hover/focus animation, removes the sticker,
 
 GitHub holds the independent website history and public APK release assets. A GitHub push alone does not redeploy Sites. Keep app implementation and runtime data in their separate repositories.
 
-Regenerate changed app/release pages with `node scripts/build.mjs`, run the static checks and motion tests, review the changes, commit and push to GitHub. Reuse the existing Site ID. Follow the installed Sites hosting skill and its `site-workflow.mjs` helper to synchronize source, push the checked commit and package the public assets. Pass its short-lived source credential through hidden stdin; never persist credentials in files or remotes. Save the returned commit and archive as a version, deploy it publicly, and wait for a successful terminal deployment status.
+Rebuild the pages with `node scripts/build.mjs`, run the static checks and tests, review the changes, then commit and push to GitHub. Reuse the existing Site ID. Use the Sites deployment workflow (`site-workflow.mjs`) to sync the source, push the checked commit and package the public assets. Enter its short-lived source credential through hidden input, and never save credentials in files or remotes. Save the returned commit and archive as a version, deploy it publicly, and wait until the deployment reports success.
 
 Only website assets belong in the deployment archive. APK binaries are GitHub Release assets, and credentials or app runtime data must not enter the website repository or archive.
 
