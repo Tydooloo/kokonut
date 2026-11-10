@@ -1,5 +1,19 @@
 # Website verification
 
+## Company-site redesign — 10 November 2026
+
+- Retired SideQuest and Revisen. The site now presents Haste and the VST Pedal concept only. Old URLs return the 404 page, which says the two apps have been retired.
+- Haste copy, icon, screens and typeface come from the Haste repository (Play 1.2.10, iPhone in preparation, 1.3 in development).
+- `node scripts/check.mjs` passes on 6 pages and 178 local references, and all 12 browser modules have resolved imports. Nine unit tests pass, and every module passes `node --check`.
+- Checked in the local preview at 1440 × 900 and 375 × 812 with no console errors and no horizontal overflow:
+  - Hero particles render and morph from coconut to leaves.
+  - The phone renders real screens, and scrolling the story switches Capture to Journal.
+  - Dragging the pedal's Drive knob set the slider to 100.
+  - Stomping the footswitch toggled Bypassed and back.
+  - Play started the riff; the display showed the live waveform and the LED followed the level. Pause stopped it.
+  - The Haste, pedal, releases and 404 pages render.
+- Not yet checked: real phones and Safari or Firefox, audio heard by a person, and the live domain. This redesign has not been deployed.
+
 ## Product-focus carousel revision — 30 September 2026
 
 - Replaced the live extruded wordmark with the original coconut icon. Cards and their lettering are larger, with additional model float and tilt. One foreground card holds focus for 3.8 seconds, followed by a 0.82-second snap to the next product.

@@ -1,8 +1,21 @@
 # Kokonut
 
-Independent software and curious hardware. A portfolio for **SideQuest**, **Haste**, **Revisen**, and the **VST Pedal** hardware concept.
+The website for **Kokonut**, an independent studio: [kokonut.cc](https://kokonut.cc).
 
-Four product cards move around the original Kokonut coconut icon in one live 3D scene. A larger foreground card holds focus for 3.8 seconds, followed by a snappy 0.82-second transition to the next product. Blender models float and tilt more visibly inside the cards. Dragging or keyboard input selects a product; page scrolling never drives the carousel. A small pause button stops automatic rotation while the floating models continue. Every card opens its own page. The pedal is explicitly a concept; no prototype, compatibility or download is claimed.
+It presents two products:
+
+- **Haste**, the food journal. Version 1.2.10 is in closed testing on Google Play; the iPhone version is in preparation.
+- **VST Pedal**, a hardware concept for running Windows VST plug-ins on stage. No prototype exists; the site says so.
+
+SideQuest and Revisen were retired from the site in November 2026. Their pages, art and downloads remain in Git history.
+
+## What's on the page
+
+- **Particle hero.** 16,000 GPU particles morph between the Kokonut coconut, Haste's leaves (sampled from the real app icon) and the pedal. They react to the pointer and scatter as you scroll.
+- **3D phone.** A phone modelled in code shows real Haste screens. On desktop, the phone stays pinned while three story steps scroll past and switch its screen. Drag to spin it.
+- **Playable pedal.** A modelled stompbox whose knobs turn, whose footswitch stomps and whose LED and display react to live audio. **Play** synthesises an original riff in the browser (Karplus–Strong strings → drive → tone → tape delay → plate reverb) with the Web Audio API.
+
+Everything is served from this repository. There's no CDN, analytics, cookie or framework at runtime, and no build step for the browser code.
 
 ## Preview locally
 
@@ -10,50 +23,47 @@ Four product cards move around the original Kokonut coconut icon in one live 3D 
 node scripts/serve.mjs
 ```
 
-Open **http://localhost:4173**. No package installation or frontend build is required. The server uses the production security headers.
+Open **http://localhost:4173**. The server applies the production security headers from `dist/_headers`.
 
-## Edit the website
+## Where things live
 
-- `scripts/content.mjs` — project names, descriptions, features and setup notes.
-- `scripts/build.mjs` — all eight HTML pages and the sitemap.
-- `scripts/layout.mjs` — common header, footer and document metadata.
-- `dist/styles.css` — the complete responsive visual system.
-- `dist/orbit.mjs` — homepage scene, perspective card links, Blender playback, gestures and keyboard access.
-- `dist/orbit-motion.mjs` — product reading intervals, timed snap transitions and manual selection.
-- `dist/scenes.mjs` — independent model views on the project detail pages.
-- `dist/motion.mjs` — reduced-motion preference and synchronized pause controls.
-- `dist/releases/manifest.json` — existing Android release metadata; the redesign leaves it unchanged.
+| Path | What it is |
+|---|---|
+| `scripts/content.mjs` | Every product claim: Haste features, platforms, FAQ, pedal questions and roadmap |
+| `scripts/build.mjs` | Generates all pages from shared components. Run after any content change |
+| `scripts/layout.mjs` | Document head, header, footer and the word-by-word heading helper |
+| `scripts/icons.mjs` | The site's original line icons |
+| `dist/styles.css` | The complete visual system |
+| `dist/js/main.js` | Site behaviour; lazy-loads the 3D modules when their section is near |
+| `dist/js/stage.js` | Shared WebGL setup: renderer, lighting, resize, sleep when off-screen |
+| `dist/js/particles.js`, `shapes.js` | Hero shader and the point-cloud sculptures |
+| `dist/js/phone-3d.js` | The phone |
+| `dist/js/pedal-*.js` | Pedal state, UI, audio engine, DSP maths and 3D model |
+| `dist/releases/manifest.json` | The archived Haste test APK's size and checksums |
 
-After changing page content or release data, run `node scripts/build.mjs`. The older `render-app-pages.mjs` and `render-releases.mjs` commands delegate to this build, so they cannot restore the previous design.
+After editing content, run `node scripts/build.mjs`. CI fails if the committed pages don't match a fresh build.
 
-## Blender source
+## Haste assets
 
-Open **`art/kokonut-collection.blend`** in Blender. It contains four original product sculptures, packed screen textures, studio lighting, a camera, and editable animation actions. The app interfaces are illustrative, not actual screenshots. The pedal is a concept rendering.
-
-`art/build_scene.py` recreates the scene and exports a separate animated GLB for each project. Runtime assets are in `dist/assets/3d/`; small WebP posters provide immediate artwork and a no-WebGL fallback.
-
-The centre uses the existing `dist/favicon.svg` coconut icon without altering its artwork. The earlier `art/kokonut-wordmark.blend` is retained as an unused design study; the live scene does not load its GLB.
-
-To rebuild on Windows with Blender 4.5 and Python with Pillow:
-
-```powershell
-./scripts/build-art.ps1 -Blender 'C:/path/to/blender.exe' -Python 'C:/path/to/python.exe'
-node scripts/build.mjs
-```
-
-The texture generator uses the system Arial font to rasterize illustrative interfaces. It does not distribute that font. Web fonts remain the repository's existing, locally hosted DM Sans assets and licenses.
-
-Three.js 0.180.0 and its MIT license are vendored locally. `node scripts/vendor-three.mjs` refreshes that exact pinned version. The website does not contact a CDN at runtime.
-
-## Verification
+`scripts/prepare-haste-assets.py` copies Haste's current icon, three real app screens (rendered with demo data) and its Bricolage Grotesque typeface from the Haste repository. It needs Pillow, fontTools and brotli:
 
 ```sh
+python scripts/prepare-haste-assets.py ../Haste
+```
+
+## Checks
+
+```sh
+node scripts/build.mjs
 node scripts/check.mjs
-node --test scripts/orbit.test.mjs scripts/motion.test.mjs
-node scripts/verify-downloads.mjs
+node --test scripts/site.test.mjs
 git diff --check
 ```
 
-Static checks cover pages, anchors, assets, all four embedded GLB animations, concept status and the existing release records. Public download checks verify status, byte sizes, attachment headers and APK signatures at the start of each file. They do not install or exercise the apps.
+`check.mjs` covers every page, link, anchor, asset and module import, and it confirms nothing loads from a third party. The tests cover the sculptures, knob and tone maths, the drive curve, the string synthesis and the heading helper. `node scripts/verify-downloads.mjs` checks the archived APK's public download.
 
-See `docs/REDESIGN.md` for design and browser verification notes. `docs/DEPLOYMENT.md` records the hosting setup and publication workflow for kokonut.cc.
+## Deployment
+
+Pushing to GitHub doesn't redeploy the site. See `docs/DEPLOYMENT.md`.
+
+Three.js 0.180.0 (MIT) is vendored in `dist/vendor/three`. Fonts are DM Sans and Bricolage Grotesque, both under the SIL Open Font License (`docs/licenses/`).
