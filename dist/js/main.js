@@ -125,4 +125,14 @@ $$('[data-story]').forEach(story => {
     .catch(warn('Phone 3D')));
 });
 
-$$('[data-demo]').forEach(demo => whenNear(demo, () => import('./demo.js').then(module => module.init(demo, JSON.parse(demo.dataset.meals))).catch(warn('Haste demo'))));
+// The demo is tiny, so it loads straight away. A meal tapped before it's ready is replayed.
+$$('[data-demo]').forEach(demo => {
+  let pending = null;
+  const early = event => { pending = event.target.closest('[data-meal]') || pending; };
+  demo.addEventListener('click', early);
+  import('./demo.js').then(module => {
+    module.init(demo, JSON.parse(demo.dataset.meals));
+    demo.removeEventListener('click', early);
+    pending?.click();
+  }).catch(warn('Haste demo'));
+});
