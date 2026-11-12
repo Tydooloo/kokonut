@@ -108,10 +108,11 @@ p { margin: 0; }
 .hero-copy .display { margin-top: 26px; max-width: 10.5ch; }
 .hero-lead { margin-top: 28px; max-width: 34ch; }
 .hero-visual { position: relative; height: min(76vh, 720px); min-height: 380px; }
-.hero-visual canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 1.6s var(--ease); }
-.hero-visual.is-ready canvas { opacity: 1; }
+/* The particle canvas spans the whole hero, edge to edge, and fades out softly at the top and bottom. */
+.hero-canvas { position: absolute; inset: 0; z-index: -1; width: 100%; height: 100%; pointer-events: none; opacity: 0; transition: opacity 1.6s var(--ease); -webkit-mask: linear-gradient(to bottom, transparent, #000 70px, #000 calc(100% - 180px), transparent); mask: linear-gradient(to bottom, transparent, #000 70px, #000 calc(100% - 180px), transparent); }
+.hero.is-ready .hero-canvas { opacity: 1; }
 .hero-fallback { position: absolute; left: 50%; top: 46%; width: min(70%, 380px); height: auto; transform: translate(-50%, -50%); filter: drop-shadow(0 40px 80px rgba(0, 0, 0, .5)); transition: opacity .8s; }
-.hero-visual.is-ready .hero-fallback, .js .hero-visual:not(.is-fallback) .hero-fallback { opacity: 0; }
+.hero.is-ready .hero-fallback, .js .hero:not(.is-fallback) .hero-fallback { opacity: 0; }
 .kicker { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px 8px 12px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(10, 11, 10, .4); font-size: .86rem; color: var(--muted); }
 .pulse { width: 8px; height: 8px; border-radius: 50%; background: #7ee2a8; box-shadow: 0 0 0 0 rgba(126, 226, 168, .6); animation: pulse 2.4s infinite; }
 @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(126, 226, 168, 0); } 100% { box-shadow: 0 0 0 0 rgba(126, 226, 168, 0); } }

@@ -27,7 +27,7 @@ Headings rise in word by word, and cards fade up in a stagger. A soft light foll
 
 ## Interactive pieces
 
-**Hero particles** (`particles.js`, `shapes.js`). One `THREE.Points`; the GPU does the work. Each point stores its position in both sculptures (the coconut and Haste's leaves, sampled from the app icon at runtime), and the shader blends them with a per-point delay. The canvas has its own grid column, sized to fit the sculpture. On phones it sits above the headline. It never overlaps text.
+**Hero particles** (`particles.js`, `shapes.js`). The GPU does the work. Each point stores its position in both logos, sampled at runtime from `/assets/logo.svg` and the Haste icon so they draw the real marks and nothing else, and the shader blends them with a per-point delay. The canvas spans the whole hero, edge to edge, and fades out at the top and bottom, so nothing is cut off. A sparse dust layer drifts across the full width. The logo itself is placed over the empty `.hero-visual` column (above the headline on phones), so it never overlaps text. It holds its shape until the hero is mostly scrolled away, then scatters.
 
 **Phone** (`phone-3d.js`). An extruded, bevelled body with glass, a camera plateau and the Haste mark on the back, showing real app screens. Drag to spin it; it eases back to rest. On the Haste page it's sticky beside the story steps.
 

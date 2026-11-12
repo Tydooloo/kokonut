@@ -8,7 +8,7 @@ Each topic has its own page: Home, Haste (Overview, Get Haste, Support), About a
 
 ## What's on the page
 
-- **Particle hero.** 14,000 GPU particles morph between the Kokonut coconut and Haste's leaves (sampled from the real app icon). They react to the pointer and scatter as you scroll. The canvas has its own column, so it never covers text.
+- **Particle hero.** 14,000 GPU particles draw either the Kokonut logo or Haste's leaves, both sampled from the real logo images, and morph from one to the other. A fine dust drifts across the whole width of the hero. The particles react to the pointer and scatter once you've scrolled most of the way past. The logo keeps to its own column, so it never covers text.
 - **3D phone.** A phone modelled in code shows real Haste screens. On the Haste page it stays pinned while three story steps scroll past and switch its screen. Drag to spin it.
 - **Try-it demo.** Pick a sample meal on the Haste page: it types itself in, Estimate fills the calorie ring and macro bars, Save confirms. Example numbers only, and labelled as such.
 - **Page transitions.** Pages cross-fade with the View Transitions API while the header stays put.

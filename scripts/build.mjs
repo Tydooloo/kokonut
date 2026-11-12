@@ -78,7 +78,8 @@ save('', page({
   description: 'Kokonut is an independent New Zealand software studio. Meet Haste: snap, say or type a meal and it’s logged in seconds.',
   bodyClass: 'home',
   body: `<main id="main">
-<section class="hero" aria-labelledby="hero-title">
+<section class="hero" aria-labelledby="hero-title" data-particles>
+  <canvas class="hero-canvas" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <p class="kicker reveal"><span class="pulse" aria-hidden="true"></span>Software studio · New Zealand</p>
@@ -86,7 +87,7 @@ save('', page({
       <p class="hero-lead reveal" style="--i:3">Kokonut makes calm, fast, private apps. Our first, Haste, turns logging a meal into a few seconds of your day.</p>
       <div class="hero-actions reveal" style="--i:4"><a class="btn btn-primary" data-magnetic href="/haste/">Meet Haste ${icon('arrowRight')}</a><a class="btn btn-ghost" href="/about/">About Kokonut</a></div>
     </div>
-    <div class="hero-visual" data-particles><canvas aria-hidden="true"></canvas><img class="hero-fallback" src="/assets/logo.svg" alt="" width="360" height="360">
+    <div class="hero-visual"><img class="hero-fallback" src="/assets/logo.svg" alt="" width="360" height="360">
       <div class="morph-switch" role="group" aria-label="Change the particle sculpture" data-morph-switch>${['Kokonut', 'Haste'].map((label, i) => `<button type="button" data-morph="${i}" aria-pressed="${i === 0}">${label}<i aria-hidden="true"></i></button>`).join('')}</div>
     </div>
   </div>

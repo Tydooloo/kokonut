@@ -1,5 +1,17 @@
 # Website verification
 
+## Full-width particles and demo fix — 12 November 2026
+
+- The particle canvas now spans the whole hero and fades out at the top and bottom instead of stopping at hard edges. A dust layer drifts across the full width.
+- The particles draw only the two real logos, sampled from `logo.svg` and the Haste icon. The rising embers and loose fibres are gone, and the logo keeps its shape until the hero is mostly scrolled away.
+- The demo script loads straight away, and a meal tapped before it's ready is replayed.
+- `node scripts/check.mjs` passes on 9 pages and 257 local references. Seven unit tests pass, including a new check that every particle sits on a visible pixel of its logo.
+- Checked in the local preview:
+  - At 1440 × 900, both logos are recognisable, there are no hard edges at scroll positions 0, 300 and 650, and the logo stays beside the headline.
+  - At 375 × 812, the logo sits above the headline, the dust spans the screen and there is no horizontal overflow.
+  - On the Haste page, a meal tapped as soon as the page loaded typed itself in. With motion paused, Estimate gave 620 kcal and 48 g protein.
+- Not yet checked: real phones, Safari or Firefox, and the live domain.
+
 ## Haste-focus redesign — 12 November 2026
 
 - The site is split into separate pages: Home, Haste (Overview, Get Haste, Support), About, Contact, Release details and Website privacy. Navigation links only to pages, never to home-page anchors, and `check.mjs` enforces it.
