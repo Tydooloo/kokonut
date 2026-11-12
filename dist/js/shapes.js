@@ -40,21 +40,21 @@ export function transform(target, { x = 0, y = 0, z = 0, scale = 1, offset = [0,
   return target;
 }
 
-// Kokonut's mark: a halved coconut, tilted to show its flesh.
+// Kokonut's mark: a halved coconut seen three-quarters on, as in the logo.
 export function coconut(count, random = rng(1)) {
   const out = cloud(count);
   const huskDark = rgb(0x5e3f28), husk = rgb(0x9a6a43), huskLight = rgb(0xc08b5c);
   const flesh = rgb(0xfff6e2), inner = rgb(0xdcc9ab), innerDeep = rgb(0xa88f6c);
-  const R = 1, inside = 0.84;
+  const R = 1, inside = 0.6;
   for (let i = 0; i < count; i++) {
     const pick = random(), phi = random() * Math.PI * 2;
-    if (pick < 0.5) {
+    if (pick < 0.46) {
       // Husk: lower hemisphere with fibrous streaks.
       const y = -Math.pow(random(), 0.85), r = Math.sqrt(1 - y * y) * R * (1 + (random() - 0.5) * 0.05);
       const streak = 0.5 + 0.5 * Math.sin(phi * 38 + y * 9);
       const color = mixRgb(mixRgb(huskDark, husk, random()), huskLight, streak * 0.45);
       put(out, i, [Math.cos(phi) * r, y * 0.94, Math.sin(phi) * r], color, 0.06, random);
-    } else if (pick < 0.74) {
+    } else if (pick < 0.78) {
       // Flesh: the bright ring at the cut.
       const r = inside + (R - inside) * Math.sqrt(random());
       put(out, i, [Math.cos(phi) * r, -random() * 0.04, Math.sin(phi) * r], flesh, 0.04, random);
@@ -68,7 +68,7 @@ export function coconut(count, random = rng(1)) {
       put(out, i, [Math.sin(theta) * Math.cos(phi) * d, Math.cos(theta) * d * 0.8, Math.sin(theta) * Math.sin(phi) * d], mixRgb(husk, huskLight, random()), 0.1, random);
     }
   }
-  return transform(out, { x: 0.62, z: -0.32, scale: 1.12, offset: [0, 0.22, 0] });
+  return transform(out, { x: 0.42, z: -0.28, scale: 1.15, offset: [0, 0.18, 0] });
 }
 
 // Haste's leaves, sampled from the real app icon's pixels.
@@ -102,36 +102,4 @@ export function flame(count, random = rng(2), image) {
     put(out, i, [(px + random() - 0.5 - cx) * scale, -(py + random() - 0.5 - cy) * scale, depth], color.map(v => Math.min(1, v * 1.08)), 0.05, random);
   }
   return transform(out, { offset: [0, -0.12, 0] });
-}
-
-// The VST Pedal: enclosure, three knobs, display, LED and footswitch.
-export function pedal(count, random = rng(3)) {
-  const out = cloud(count);
-  const W = 1.15, H = 0.36, D = 1.5, top = H / 2;
-  const ivory = rgb(0xe9e1cf), side = rgb(0xa79d8a), knob = rgb(0xff8a3d), display = rgb(0xffb36b), steel = rgb(0xd7d4cc), led = rgb(0xff4d1a);
-  const knobs = [-0.36, 0, 0.36];
-  for (let i = 0; i < count; i++) {
-    const pick = random();
-    if (pick < 0.36) {
-      put(out, i, [(random() - 0.5) * W, top, (random() - 0.5) * D], ivory, 0.06, random);
-    } else if (pick < 0.62) {
-      // Walls: choose a point on the perimeter.
-      const t = random() * 2 * (W + D), y = (random() - 0.5) * H;
-      const p = t < W ? [t - W / 2, y, D / 2] : t < W + D ? [W / 2, y, t - W - D / 2] : t < 2 * W + D ? [t - W - D - W / 2, y, -D / 2] : [-W / 2, y, t - 2 * W - D - D / 2];
-      put(out, i, p, side, 0.06, random);
-    } else if (pick < 0.8) {
-      const k = knobs[Math.floor(random() * 3)], a = random() * Math.PI * 2, onTop = random() < 0.55;
-      const r = onTop ? 0.12 * Math.sqrt(random()) : 0.12, y = onTop ? top + 0.13 : top + random() * 0.13;
-      put(out, i, [k + Math.cos(a) * r, y, -0.12 + Math.sin(a) * r], knob, 0.08, random);
-    } else if (pick < 0.88) {
-      put(out, i, [(random() - 0.5) * 0.62, top + 0.015, -0.5 + (random() - 0.5) * 0.2], display, 0.08, random);
-    } else if (pick < 0.97) {
-      const a = random() * Math.PI * 2, onTop = random() < 0.6, r = onTop ? 0.12 * Math.sqrt(random()) : 0.12;
-      put(out, i, [Math.cos(a) * r, onTop ? top + 0.11 : top + random() * 0.11, 0.45 + Math.sin(a) * r], steel, 0.05, random);
-    } else {
-      const a = random() * Math.PI * 2, r = 0.035 * Math.sqrt(random());
-      put(out, i, [Math.cos(a) * r, top + 0.03 + random() * 0.02, 0.18 + Math.sin(a) * r], led, 0.02, random);
-    }
-  }
-  return transform(out, { x: 0.78, y: -0.5, scale: 1.3, offset: [0, -0.05, 0] });
 }

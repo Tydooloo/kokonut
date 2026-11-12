@@ -43,16 +43,6 @@ const revealer = new IntersectionObserver(entries => entries.forEach(entry => {
 $$('[data-count]').forEach(node => { if (!motion.paused) node.textContent = '0'; });
 $$('.reveal, [data-words]').forEach(node => revealer.observe(node));
 
-/* Highlight the nav item for the section in view (home page). */
-const navLinks = new Map($$('[data-nav]').map(link => [link.dataset.nav, link]));
-const sectionObserver = new IntersectionObserver(entries => entries.forEach(entry => {
-  const link = navLinks.get(entry.target.dataset.section);
-  if (!link) return;
-  if (entry.isIntersecting) { navLinks.forEach(other => other.removeAttribute('aria-current')); link.setAttribute('aria-current', 'true'); }
-  else link.removeAttribute('aria-current');
-}), { rootMargin: '-45% 0px -50% 0px' });
-$$('[data-section]').forEach(section => sectionObserver.observe(section));
-
 /* Pointer-following light on cards, and magnetic buttons. */
 if (finePointer) {
   $$('.spotlight').forEach(card => card.addEventListener('pointermove', event => {
@@ -135,4 +125,4 @@ $$('[data-story]').forEach(story => {
     .catch(warn('Phone 3D')));
 });
 
-$$('[data-pedal-lab]').forEach(lab => whenNear(lab, () => import('./pedal-ui.js').then(module => module.init(lab, { webgl })).catch(warn('Pedal')), '600px'));
+$$('[data-demo]').forEach(demo => whenNear(demo, () => import('./demo.js').then(module => module.init(demo, JSON.parse(demo.dataset.meals))).catch(warn('Haste demo'))));

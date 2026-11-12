@@ -20,7 +20,8 @@ for (const file of files) {
   assert.equal(new Set(ids).size, ids.length, `${file}: duplicate IDs`);
   assert.ok(!/<script(?![^>]*\bsrc=)[^>]*>/.test(html), `${file}: inline scripts are blocked by the CSP`);
   assert.ok(!/(src|href)="https?:\/\/(?!kokonut\.cc)[^"]*\.(js|css|woff2?)"/.test(html), `${file}: third-party scripts, styles or fonts`);
-  assert.ok(!/sidequest|revisen/i.test(html.replace(/SideQuest and Revisen have been retired/, '')), `${file}: retired products still mentioned`);
+  assert.ok(!/sidequest|revisen|vst pedal|data-pedal/i.test(html), `${file}: retired projects still mentioned`);
+  assert.ok(!/href="\/#/.test(html), `${file}: navigation must link to pages, not home-page anchors`);
   for (const match of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const ref = match[1];
     if (/^(https?:|data:|mailto:)/.test(ref)) continue;
@@ -58,11 +59,11 @@ for (const app of manifest.releases) {
 }
 assert.ok(!readdirSync(root, { recursive: true }).some(path => /\.(apk|env)$/.test(path)), 'No APKs or secrets in website assets');
 
-const pedal = readFileSync(join(root, 'pedal/index.html'), 'utf8');
-assert.ok(/No prototype yet/.test(pedal) && /concept/i.test(pedal), 'Pedal is labelled as a concept');
-assert.ok(!pedal.includes('/releases/download/'), 'No pedal download');
+assert.ok(!existsSync(join(root, 'pedal')), 'Pedal page removed');
 const home = readFileSync(join(root, 'index.html'), 'utf8');
-for (const hook of ['data-particles', 'data-phone', 'data-pedal-lab', 'data-morph-switch']) assert.ok(home.includes(hook), `Home: ${hook}`);
-assert.ok(readFileSync(join(root, 'haste/index.html'), 'utf8').includes('id="support"'), 'Haste support section (App Store support URL)');
-
+for (const hook of ['data-particles', 'data-phone', 'data-morph-switch']) assert.ok(home.includes(hook), `Home: ${hook}`);
+const hastePage = readFileSync(join(root, 'haste/index.html'), 'utf8');
+for (const hook of ['data-story', 'data-demo', 'data-meals']) assert.ok(hastePage.includes(hook), `Haste: ${hook}`);
+assert.ok(readFileSync(join(root, 'haste/support/index.html'), 'utf8').includes('admin@kokonut.cc'), 'Haste support page has the support email (App Store support URL)');
+for (const [file, current] of [['haste/index.html', '/haste/'], ['about/index.html', '/about/'], ['contact/index.html', '/contact/']]) assert.ok(readFileSync(join(root, file), 'utf8').includes(`href="${current}" aria-current="page"`), `${file}: current page marked in the nav`);
 console.log(`PASS: ${files.length} pages, ${refs} local references, ${scripts.length} scripts with resolved imports, Haste release data.`);
