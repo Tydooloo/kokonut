@@ -1,5 +1,18 @@
 # Website verification
 
+## Haste-focus redesign — 12 November 2026
+
+- The site is split into separate pages: Home, Haste (Overview, Get Haste, Support), About, Contact, Release details and Website privacy. Navigation links only to pages, never to home-page anchors, and `check.mjs` enforces it.
+- The VST Pedal concept is removed along with its pages, model and audio. Earlier SideQuest and Revisen URLs still return the 404 page.
+- New logo (geometric halved coconut). New fonts: Geist, Geist Mono and Instrument Serif italic.
+- Fixed the hero particles overlapping the headline at mid widths. The canvas now has its own column.
+- `node scripts/check.mjs` passes on 9 pages and 257 local references, and all 8 browser modules have resolved imports. Six unit tests pass, and every module passes `node --check`.
+- Checked in the local preview at 1100 × 900 and 375 × 812 with no failing requests and no horizontal overflow:
+  - The hero sculpture stays beside or above the text.
+  - The About and Haste pages render, and each page's navigation item is marked current.
+  - In the demo, picking the chicken bowl typed the meal, Estimate showed 620 kcal and 48 g protein, and Save became available.
+- Not yet checked: real phones, Safari or Firefox, and the live domain. Not yet deployed.
+
 ## Company-site redesign — 10 November 2026
 
 - Retired SideQuest and Revisen. The site now presents Haste and the VST Pedal concept only. Old URLs return the 404 page, which says the two apps have been retired.

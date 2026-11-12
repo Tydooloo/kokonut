@@ -2,7 +2,7 @@
 
 Initial deployment verified on 17 September 2026. The revision, CI run and version below are historical records of that deployment; Sites holds the current publication status.
 
-- Public website: https://kokonut.cc (pages: /, /haste/, /pedal/, /releases/, /privacy/; SideQuest and Revisen pages were retired in November 2026)
+- Public website: https://kokonut.cc (pages: /, /haste/, /haste/get/, /haste/support/, /about/, /contact/, /releases/, /privacy/; SideQuest, Revisen and the VST Pedal were retired in November 2026)
 - Alternate hostname: https://www.kokonut.cc
 - Hosting address: https://kokonut.aaronko1005.chatgpt.site
 - Website source: https://github.com/Tydooloo/kokonut
