@@ -158,6 +158,17 @@ function start() {
   });
   const found = sheets[16]; // the note the search pulls back out
 
+  // Once the story has finished, the canvas scrolls away with it. This runs on scroll rather
+  // than in the render loop: the loop sleeps while the canvas is off-screen, so only a scroll
+  // handler can bring the canvas back and wake it.
+  const followStory = () => {
+    const leave = Math.max(0, innerHeight - filing.getBoundingClientRect().bottom);
+    stageEl.style.transform = leave ? `translateY(${-leave}px)` : '';
+  };
+  addEventListener('scroll', followStory, { passive: true });
+  addEventListener('resize', followStory);
+  followStory();
+
   let intro = 0;
   const stage = createStage(stageEl, {
     fov: 35, environment: false,
@@ -169,10 +180,6 @@ function start() {
     onFrame(dt, time) {
       const still = motion.paused;
       intro = Math.min(1, intro + dt * 0.7);
-      // Once the story has finished, the canvas scrolls away with it.
-      const filingRect = filing.getBoundingClientRect();
-      const leave = Math.max(0, view.height - filingRect.bottom);
-      stageEl.style.transform = leave ? `translateY(${-leave}px)` : '';
 
       const p = progress;
       const base = Math.min(view.height * 0.2, view.width * 0.24) * view.unit; // sheet height in world units
