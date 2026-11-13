@@ -1,45 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { rng, coconut, flame } from '../dist/js/shapes.js';
+import { readFileSync } from 'node:fs';
 import { words } from './layout.mjs';
-import { haste, pages, nav, hasteNav } from './content.mjs';
-
-const finite = array => array.every(Number.isFinite);
-
-test('rng is deterministic and in [0, 1)', () => {
-  const a = rng(9), b = rng(9);
-  const values = Array.from({ length: 1000 }, () => a());
-  assert.deepEqual(values.slice(0, 5), Array.from({ length: 5 }, () => b()));
-  assert.ok(values.every(v => v >= 0 && v < 1));
-});
-
-test('logos fill every point with finite, bounded positions and colours', () => {
-  const image = { width: 8, height: 8, data: new Uint8ClampedArray(8 * 8 * 4) };
-  for (let i = 0; i < 64; i++) if (i % 3 === 0) image.data.set([197, 227, 211, 255], i * 4);
-  for (const shape of [coconut(3000, rng(1), image), flame(3000, rng(2), image)]) {
-    assert.equal(shape.positions.length, 9000);
-    assert.ok(finite(shape.positions) && finite(shape.colors));
-    assert.ok(shape.positions.every(v => Math.abs(v) < 3), 'stays inside the hero');
-    assert.ok(shape.colors.every(v => v >= 0 && v <= 1));
-  }
-});
-
-test('logos refuse an empty image', () => {
-  const empty = { width: 2, height: 2, data: new Uint8ClampedArray(16) };
-  assert.throws(() => flame(10, rng(1), empty));
-  assert.throws(() => coconut(10, rng(1), empty));
-});
-
-test('every particle sits on a visible pixel of the logo, with no strays', () => {
-  // A 10 x 10 image with only its left half visible: no point may land in the right half.
-  const image = { width: 10, height: 10, data: new Uint8ClampedArray(400) };
-  for (let y = 0; y < 10; y++) for (let x = 0; x < 5; x++) image.data.set([240, 230, 210, 255], (y * 10 + x) * 4);
-  const shape = coconut(2000, rng(3), image);
-  const xs = shape.positions.filter((_, i) => i % 3 === 0);
-  const span = Math.max(...xs) - Math.min(...xs);
-  assert.ok(span < 1.3 * 2 * 1.15, 'stays within the logo');
-  assert.ok(Math.abs((Math.max(...xs) + Math.min(...xs)) / 2) < 0.2, 'centred on the logo, nothing elsewhere');
-});
+import { haste, burble, cairn, aaron, links, pages } from './content.mjs';
 
 test('demo meals have consistent example numbers', () => {
   assert.ok(haste.demo.length >= 3);
@@ -51,9 +14,42 @@ test('demo meals have consistent example numbers', () => {
   }
 });
 
-test('every navigation target is a real page', () => {
+test('the phone has a screen for every Haste story step', () => {
+  assert.deepEqual(haste.screens.map(screen => screen.id), ['capture', 'journal', 'progress']);
+});
+
+test('Burble sample notes are filed under folders the demo notebook starts with', () => {
+  const roots = new Set(burble.tree.map(node => node.name));
+  for (const sample of burble.demo) {
+    assert.ok(roots.has(sample.path[0]), `${sample.id}: ${sample.path[0]}`);
+    assert.ok(sample.input.length <= 80, `${sample.id}: fits the capture field`);
+  }
+  assert.equal(burble.stacks.length, 3, 'the filing story has three stacks');
+});
+
+test('Cairn is described as a concept, with no sound demo', () => {
+  const page = readFileSync('dist/cairn/index.html', 'utf8');
+  assert.match(page, /Concept/);
+  assert.ok(!/data-sound|Hear it/.test(page));
+  assert.equal(cairn.pillars.length, 3);
+});
+
+test('store, web-app and waitlist links are well formed', () => {
+  for (const [name, href] of Object.entries(links)) {
+    const url = new URL(href);
+    assert.ok(['https:', 'mailto:'].includes(url.protocol), name);
+  }
+  assert.equal(new URL(links.hasteAndroid).searchParams.get('id'), 'com.kokonut.haste');
+  assert.equal(new URL(links.burbleAndroid).searchParams.get('id'), 'com.kokonut.burble');
+});
+
+test('portfolio projects link to real pages and have cover art', () => {
   const known = new Set(pages.map(([, href]) => href));
-  for (const [, href] of [...nav, ...hasteNav]) assert.ok(known.has(href), href);
+  const covers = readFileSync('dist/js/covers.js', 'utf8');
+  for (const project of aaron.projects) {
+    assert.ok(known.has(project.href), `${project.id}: ${project.href}`);
+    assert.ok(covers.includes(`async ${project.id}(ctx)`), `${project.id}: cover painter`);
+  }
 });
 
 test('heading words are escaped and indexed for staggered reveals', () => {

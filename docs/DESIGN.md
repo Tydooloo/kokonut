@@ -2,45 +2,41 @@
 
 ## Direction (November 2026)
 
-kokonut.cc is the company site for Kokonut and its one product, Haste. Each topic has its own page, and navigation never jumps around a long page:
+kokonut.cc holds five places that share a domain and a footer and nothing else. Each has its own palette, typeface, motion and 3D scene, so a visitor to one never feels they are on a template.
 
-| Page | Purpose |
-|---|---|
-| `/` | The studio in one screen, a Haste feature with the 3D phone, principles, beta call-to-action |
-| `/haste/` | Haste overview: scroll story, try-it demo, features, privacy |
-| `/haste/get/` | Platforms, how to join the beta, the archived APK |
-| `/haste/support/` | FAQ, support email, privacy policy and account deletion links (the App Store support URL) |
-| `/about/` | The studio, principles, numbers, stack |
-| `/contact/` | Email and contact routes |
+| Page | Idea | Palette | Type |
+|---|---|---|---|
+| `/` hub | Three products on a turntable; the page becomes the one in front | Borrowed from the active product | Geist; each name in its own product's face |
+| `/haste/` | Fresh and light; one phone that follows you down the page | Pale sage `#eef2e9`, forest `#0e1b14`, mint `#a9d2bd` | Geist with Instrument Serif italic |
+| `/burble/` | Black ink on paper, as in the app's own design notes | Paper `#fbfaf7`, ink `#191919`, hairlines only | Newsreader with Geist |
+| `/cairn/` | A gig poster on a dark stage, with the product still a question | Black `#0a0908`, bone `#ede6da`, amber `#ff7a1a` | Anton with Geist |
+| `/aaron/` | A dark editorial portfolio | Near-black `#0b0b0c`, warm white, sand `#dcc7a2` | Instrument Serif with Geist |
 
-Haste pages share a sub-navigation (Overview · Get Haste · Support). The main navigation marks the current section.
+Labels and buttons are set in an ordinary sans in sentence case. There are no monospaced or letter-spaced capitals: they read as machine-made.
 
-## Identity
+## The scenes
 
-- **Logo.** A geometric halved coconut: a brown bowl, a dark lip shadow and a cream cut face with a tan cavity, tilted −16°. Flat colours, no outlines, so it reads at 16 px. `dist/assets/logo.svg` and `dist/favicon.svg` are the same file. The wordmark is lowercase "kokonut" set in Geist.
-- **Type.** Geist for everything, Geist Mono for small labels, and Instrument Serif italic for the emphasised words in headings.
-- **Colour.** Near-black with warm cream type. Coconut cream is the studio accent, and Haste's sage green is the product accent. Sections set `--accent`, so cards, icons and highlights follow.
+**Hub** (`hub.js`). The phone, a fan of notes and the Cairn placeholder sit on a turntable and always face the camera. Drag, arrows, tabs or the arrow keys turn it; it moves on by itself until someone touches it. Three background layers cross-fade and the text colours follow.
 
-## Motion
+**Haste** (`haste.js`). One fixed canvas over the page. Empty placeholders marked `data-anchor` say where the phone should be; it flies to whichever is most on screen, sized to fit, and makes a full turn on the way. In the story it changes screen and lean with each step. This makes the layout responsive for free: move a placeholder in CSS and the phone follows.
 
-Headings rise in word by word, and cards fade up in a stagger. A soft light follows the pointer across cards, and primary buttons lean gently toward it. The header tucks away while you read downwards, and a progress line runs along the top. Pages cross-fade with the View Transitions API while the header stays in place. Everything respects `prefers-reduced-motion`, and the footer's **Pause motion** stops it for the visit.
+**Burble** (`burble.js`, `model-paper.js`). Thirty sheets with contents drawn in code from a seeded generator. Scroll progress through the tall filing section moves each one from a loose ring to its place on a stack, staggered, then lifts one out for the search. The stacks' positions are read from the page, so the sheets land on the dashed trays at any size. A 2D canvas draws the cursor's ink trail, which fades after a moment.
 
-## Interactive pieces
+**Cairn** (`cairn.js`, `model-pedal.js`). Development has not started, so nothing about the hardware is shown as decided. The model is a dark slab with glowing edges, faint outlines where controls might go, a line of light sweeping across it and a large "?" floating above. The page is short on purpose: what it is, that it is not just a guitar pedal, and a waitlist. There is no sound demo.
 
-**Hero particles** (`particles.js`, `shapes.js`). The GPU does the work. Each point stores its position in both logos, sampled at runtime from `/assets/logo.svg` and the Haste icon so they draw the real marks and nothing else, and the shader blends them with a per-point delay. The canvas spans the whole hero, edge to edge, and fades out at the top and bottom, so nothing is cut off. A sparse dust layer drifts across the full width. The logo itself is placed over the empty `.hero-visual` column (above the headline on phones), so it never overlaps text. It holds its shape until the hero is mostly scrolled away, then scatters.
-
-**Phone** (`phone-3d.js`). An extruded, bevelled body with glass, a camera plateau and the Haste mark on the back, showing real app screens. Drag to spin it; it eases back to rest. On the Haste page it's sticky beside the story steps.
-
-**Try-it demo** (`demo.js`). Three sample meals with example numbers (checked in tests against 4/4/9 kcal per gram). It shows the feel of capture → estimate → review → save, and says plainly that the numbers are examples.
+**Portfolio** (`aaron.js`, `covers.js`). The hero follows the classic dark-portfolio layout: a colour cut-out portrait in the centre standing on the bottom edge, the headline bottom left, a quote bottom right. The portrait is an ordinary image, in front of the canvas and behind the words. The canvas draws only the ring of project cards, placed at eye level so it curves behind the head; cards fade out before they come round the front. There are no particle effects.
 
 ## Robustness
 
-- 3D and the demo load only when their section is near. Render loops sleep off-screen or in background tabs.
-- Without WebGL, the hero shows the logo and the phone shows a styled screenshot that still switches screens.
-- If the main script never runs, `boot.js` reveals all hidden content after 4 s.
+- Every scene sleeps when off-screen or in a background tab.
+- Without WebGL each page still works: Haste shows screenshots, the portfolio shows the portrait image, the others simply lose their 3D.
+- If a page's script never runs, `boot.js` reveals all hidden content after 4 s.
 - The CSP allows only same-origin scripts, so there are no inline scripts.
+- Everything respects `prefers-reduced-motion`, and each footer's **Pause motion** stops movement for the visit.
 
-## Honesty rules
+## What the pages claim
 
-- Haste's status comes from the Haste repository's `docs/STATUS.md`, and feature copy follows `docs/APP_STORE_LISTING.md`.
-- Demo numbers are labelled as examples. The archived 1.0.0 APK is marked as superseded by the Play version.
+- Haste and Burble are presented as released on the App Store and Google Play; Burble also as a web app. Store and web links are in `scripts/content.mjs` (`links`); the App Store ones are placeholders until the listings exist.
+- Burble's page describes the product in Burble's `docs/PRODUCT.md`.
+- Cairn is presented as a concept with a waitlist. The page gives no specifications, prices or dates.
+- Demo numbers and filing results are labelled as examples.
