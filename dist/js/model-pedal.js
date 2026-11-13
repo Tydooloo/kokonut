@@ -43,9 +43,9 @@ export async function buildPedal() {
   const texture = new THREE.CanvasTexture(canvas);
   texture.colorSpace = THREE.SRGBColorSpace; texture.anisotropy = 8;
   // It stands above the slab and always faces the viewer.
-  const mark = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, depthTest: false, toneMapped: false }));
+  const mark = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, toneMapped: false }));
   mark.scale.setScalar(1.35); mark.position.set(0, 0.86, 0);
-  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, depthTest: false, toneMapped: false, blending: THREE.AdditiveBlending, opacity: 0.25 }));
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: texture, transparent: true, depthWrite: false, toneMapped: false, blending: THREE.AdditiveBlending, opacity: 0.25 }));
   glow.scale.setScalar(1.75); glow.position.copy(mark.position);
   mark.renderOrder = 6; glow.renderOrder = 5;
   pedal.add(glow, mark);
