@@ -4,8 +4,11 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 
 const fonts = [
   { family: 'Geist', query: 'Geist:wght@300..800', file: 'geist', license: 'geist' },
-  { family: 'Geist Mono', query: 'Geist+Mono:wght@400..600', file: 'geist-mono', license: 'geistmono' },
   { family: 'Instrument Serif', query: 'Instrument+Serif:ital@1', file: 'instrument-serif-italic', license: 'instrumentserif' },
+  { family: 'Instrument Serif', query: 'Instrument+Serif', file: 'instrument-serif', license: 'instrumentserif' },
+  { family: 'Newsreader', query: 'Newsreader:opsz,wght@6..72,300..700', file: 'newsreader', license: 'newsreader' },
+  { family: 'Newsreader', query: 'Newsreader:ital,opsz,wght@1,6..72,300..700', file: 'newsreader-italic', license: 'newsreader' },
+  { family: 'Anton', query: 'Anton', file: 'anton', license: 'anton' },
 ];
 const agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36';
 mkdirSync('dist/assets/fonts', { recursive: true });
